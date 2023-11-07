@@ -16,5 +16,7 @@ public:
 	GameObject(int iX, int iY, int iRadius);
 
 	sf::Shape& getShape();
-	void ballMovement();
+	void ballMovement(float fDeltaTime);
+	void canonRotation(int vMousePosition);
+
 };
