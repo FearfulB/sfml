@@ -5,18 +5,19 @@
 class GameObject
 {
 public:
-	int m_iX;
-	int m_iY;
+	float m_iX;
+	float m_iY;
 	int m_iWidth;
 	int m_iLength;
 	int m_iRadius;
 	sf::Shape* m_Shape;
 
-	GameObject(int iX, int iY, int iWitdh, int iLength);
-	GameObject(int iX, int iY, int iRadius);
+	GameObject(float iX, float iY, int iWitdh, int iLength);
+	GameObject(float iX, float iY, int iRadius);
 
 	sf::Shape& getShape();
-	void ballMovement(float fDeltaTime);
-	void canonRotation(int vMousePosition);
+	void move(float fDeltaTime);
+	void rotate(float vMousePositionX, float vMousePositionY);
+	bool isColliding(GameObject* oGameObject);
 
 };
