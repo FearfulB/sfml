@@ -15,6 +15,8 @@ int main(int argc, char** argv)
     GameObject* rect = new GameObject(450, 200, 100, 100);
     GameObject* oCanon = new GameObject(310, 410, 50, 20);
     GameObject* oWallLeft = new GameObject(0, 0, 480, 10);
+    GameObject* oWallRight = new GameObject(630, 0, 480, 10);
+    GameObject* oWallTop = new GameObject(0, 0, 10, 630);
     float fDirectionX = 1 * sqrt(2);
     float fDirectionY = -1 * sqrt(2);
     float fDeltaTime = 0.0f;
@@ -47,6 +49,8 @@ int main(int argc, char** argv)
         oWindow.draw(oCircle->getShape());
         oWindow.draw(rect->getShape());
         oWindow.draw(oWallLeft->getShape());
+        oWindow.draw(oWallRight->getShape());
+        oWindow.draw(oWallTop->getShape());
         oWindow.draw(oCanon->getShape());
 
         oWindow.display();
