@@ -16,8 +16,9 @@ public:
 	GameObject(float iX, float iY, int iRadius);
 
 	sf::Shape& getShape();
-	void move(float fDeltaTime);
+	void move(float fDeltaTime, float fDirectionX, float fDirectionY);
 	void rotate(float vMousePositionX, float vMousePositionY);
 	bool isColliding(GameObject* oGameObject);
-
+	float bounce(float fDeltaTime, float fDirectionX, float fDirectionY);
+	~GameObject();
 };

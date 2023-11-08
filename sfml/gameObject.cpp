@@ -11,8 +11,6 @@ GameObject::GameObject(float iX, float iY, int iWidth, int iLength)
 	m_iLength = iLength;
 	m_Shape = new sf::RectangleShape(sf::Vector2f(m_iLength, m_iWidth));
 	m_Shape->setPosition(m_iX, m_iY);
-	m_Shape->setOrigin(m_iLength/2,0);
-
 }
 GameObject::GameObject(float iX, float iY, int iRadius) {
 	m_iX = iX;
@@ -21,16 +19,15 @@ GameObject::GameObject(float iX, float iY, int iRadius) {
 	m_iLength = 2 * m_iRadius;
 	m_iWidth = 2 * m_iRadius;
 	m_Shape = new sf::CircleShape(m_iRadius);
-	m_Shape = new sf::RectangleShape(sf::Vector2f(m_iLength, m_iWidth));
 	m_Shape->setPosition(m_iX, m_iY);
 }
 sf::Shape& GameObject::getShape() {
 	return *m_Shape;
 }
 
-void GameObject::move(float fDeltaTime) {
-	m_iX += 1/sqrt(2) * fDeltaTime * 60.f;
-	m_iY += -1/ sqrt(2) * fDeltaTime * 60.f;
+void GameObject::move(float fDeltaTime, float fDirectionX, float fDirectionY) {
+	m_iX += fDirectionX * fDeltaTime * 60.f;
+	m_iY += fDirectionY * fDeltaTime * 60.f;
 	m_Shape->setPosition(m_iX, m_iY);
 }
 
@@ -44,19 +41,48 @@ void GameObject::rotate(float vMousePositionX, float vMousePositionY) {
 
 bool GameObject::isColliding(GameObject* oGameObject) {
 	if (m_iWidth < oGameObject->m_iWidth) {
-		return math::isPointBetween(m_iX, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iWidth)
-			|| math::isPointBetween(m_iX + m_iWidth, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iWidth);
-	}
-	else{
-		return math::isPointBetween(oGameObject->m_iX, m_iX, m_iX + m_iWidth)
-			|| math::isPointBetween(oGameObject->m_iX + oGameObject->m_iWidth, m_iX, m_iX + m_iWidth);
-	}
-	if (m_iLength < oGameObject->m_iLength) {
-		return math::isPointBetween(m_iY, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iLength)
-			|| math::isPointBetween(m_iY + m_iLength, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iLength);
+		std::cout << "e" << std::endl;
+		if (math::isPointBetween(m_iX, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iWidth)
+			|| math::isPointBetween(m_iX + m_iWidth, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iWidth)) {
+			if (m_iLength < oGameObject->m_iLength) {
+				if (math::isPointBetween(m_iY, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iLength)
+					|| math::isPointBetween(m_iY + m_iLength, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iLength)) {
+					return true;
+				}
+			}
+			else {
+				if (math::isPointBetween(oGameObject->m_iY, m_iY, m_iY + m_iLength)
+					|| math::isPointBetween(oGameObject->m_iY + oGameObject->m_iLength, m_iY, m_iLength)) {
+					return true;
+				}
+			}
+		}
 	}
 	else {
-		return math::isPointBetween(oGameObject->m_iY, m_iY, m_iY + m_iLength)
-			|| math::isPointBetween(oGameObject->m_iY + oGameObject->m_iLength, m_iY, m_iLength);
+		if (math::isPointBetween(oGameObject->m_iX, m_iX, m_iX + m_iWidth)
+			|| math::isPointBetween(oGameObject->m_iX + oGameObject->m_iWidth, m_iX, m_iX + m_iWidth)) {
+			if (m_iLength < oGameObject->m_iLength) {
+				if (math::isPointBetween(m_iY, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iLength)
+					|| math::isPointBetween(m_iY + m_iLength, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iLength)) {
+					return true;
+				}
+			}
+			else {
+				if (math::isPointBetween(oGameObject->m_iY, m_iY, m_iY + m_iLength)
+					|| math::isPointBetween(oGameObject->m_iY + oGameObject->m_iLength, m_iY, m_iLength)) {
+					return true;
+				}
+			}
+		}
 	}
+}
+
+float GameObject::bounce(float  fDeltaTime, float fDirectionX, float fDirectionY) {
+	/*a changer si l on veux faire le bonus avec les balles qui collisionne*/
+	return fDirectionX = -fDirectionX;
+}
+
+GameObject::~GameObject()
+{
+	delete m_Shape;
 }
