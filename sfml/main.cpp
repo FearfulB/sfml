@@ -34,10 +34,9 @@ int main(int argc, char** argv)
         }
  /*       if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {*/
-        oCanon->move(fDeltaTime, fDirectionX, fDirectionY);
+        oCircle->move(fDeltaTime, fDirectionX, fDirectionY);
         //UPDATE
-        if (oCanon->isColliding(rect) ) {
-            std::cout << "aa" << std::endl;
+        if (oCircle->isColliding(rect) ) {
             fDirectionX = oCircle->bounce(fDeltaTime, fDirectionX, fDirectionY);
         };
        
