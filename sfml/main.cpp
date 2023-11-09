@@ -11,15 +11,16 @@ int main(int argc, char** argv)
     sf::RenderWindow oWindow(sf::VideoMode(640, 480), "Frozen Bubble");
     sf::Clock oClock;
 
-    GameObject* oCircle = new GameObject(310, 390, 10);
+    GameObject* oCircle = new GameObject(340, 60, 10);
     GameObject* rect = new GameObject(450, 200, 100, 100);
     GameObject* oCanon = new GameObject(310, 410, 50, 20);
     GameObject* oWallLeft = new GameObject(0, 0, 480, 10);
     GameObject* oWallRight = new GameObject(630, 0, 480, 10);
     GameObject* oWallTop = new GameObject(0, 0, 10, 630);
-    float fDirectionX = 1 * sqrt(2);
+    float fDirectionX = -1 * sqrt(2);
     float fDirectionY = -1 * sqrt(2);
-    float fDeltaTime = 0.0f;
+    float fDeltaTime = 0;
+    char site = ' ';
     //GameLoop
     while (oWindow.isOpen())
     {
@@ -27,22 +28,27 @@ int main(int argc, char** argv)
         //EVENT
         sf::Event oEvent;
 
-       
-        
         while (oWindow.pollEvent(oEvent))
         {
             if (oEvent.type == sf::Event::Closed)
                 oWindow.close();
         }
- /*       if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-        {*/
+
         oCircle->move(fDeltaTime, fDirectionX, fDirectionY);
         //UPDATE
-        if (oCircle->isColliding(rect) ) {
-            fDirectionX = oCircle->bounce(fDeltaTime, fDirectionX, fDirectionY);
-        };
+        //if (oCircle->isColliding(oWallTop)) {
+        //    site = oCircle->checkSide(oWallTop);
+        //    if (site == 'l' || site == 'r') {
+        //        fDirectionX = oCircle->onCollisionEnter(fDeltaTime, fDirectionX, fDirectionY, site);
+        //    }
+        //    else {
+        //        fDirectionY = oCircle->onCollisionEnter(fDeltaTime, fDirectionX, fDirectionY, site);
+        //    }
+
+        //};
+        oCircle->handleCollision(oWallLeft);
        
-         /*oCanon->rotate(localPosition.x, localPosition.y);*/
+         oCanon->rotate(localPosition.x, localPosition.y);
         //DRAW
 
         oWindow.clear();
