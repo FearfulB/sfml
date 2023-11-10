@@ -1,4 +1,5 @@
 #include "math.h"
+#include <iostream>
 
 namespace math
 {
@@ -8,4 +9,8 @@ namespace math
 		}
 		return false;
 	}
+	/*float normVector(int point, float fDirectionX, float fDirectionY) {
+		fDirectionX = fDirectionX / sqrt(pow(fDirectionX,2)+pow(fDirectionY,2));
+		fDirectionY = fDirectionY / sqrt(pow(fDirectionX,2)+pow(fDirectionY,2));
+	}*/
 }

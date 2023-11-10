@@ -3,13 +3,14 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-GameObject::GameObject(float iX, float iY, int iWidth, int iLength)
+GameObject::GameObject(float iX, float iY, int iWidth, int iLength, float fDirectionX, float fDirectionY)
 {
 	m_iX = iX;
 	m_iY = iY;
 	m_iWidth = iWidth;
 	m_iLength = iLength;
-	m_bIsCollide = false;
+	m_fDirectionX = fDirectionX;
+	m_fDirectionY = fDirectionY;
 	m_Shape = new sf::RectangleShape(sf::Vector2f(m_iLength, m_iWidth));
 	m_Shape->setPosition(m_iX, m_iY);
 }
@@ -19,7 +20,6 @@ GameObject::GameObject(float iX, float iY, int iRadius) {
 	m_iRadius = iRadius;
 	m_iLength = 2 * m_iRadius;
 	m_iWidth = 2 * m_iRadius;
-	m_bIsCollide = false;
 	m_Shape = new sf::CircleShape(m_iRadius);
 	m_Shape->setPosition(m_iX, m_iY);
 }
@@ -27,9 +27,10 @@ sf::Shape& GameObject::getShape() {
 	return *m_Shape;
 }
 
-void GameObject::move(float fDeltaTime, float fDirectionX, float fDirectionY) {
-	m_iX += fDirectionX * fDeltaTime * 60.f;
-	m_iY += fDirectionY * fDeltaTime * 60.f;
+void GameObject::move(float fDeltaTime, GameObject* oGameObject) {
+	/*std::cout << m_fDirectionX << std::endl;*/
+	m_iX += oGameObject->m_fDirectionX * fDeltaTime * 60.f;
+	m_iY += oGameObject->m_fDirectionY * fDeltaTime * 60.f;
 	m_Shape->setPosition(m_iX, m_iY);
 }
 
@@ -41,41 +42,45 @@ void GameObject::rotate(float vMousePositionX, float vMousePositionY) {
 
 }
 
-void GameObject::handleCollision(GameObject* oGameObject) {
+
+void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime) {
+	
 	bool isCollide = isColliding(oGameObject);
+	bool bIsAlreadyInCollision = false;
+	
+	char cSite = this->checkSide(oGameObject);
+	for (int i = 0; i < m_vObjectCollide.size(); i++) {
+		if (m_vObjectCollide[i] == oGameObject) {
+			bIsAlreadyInCollision = true;
+			break;
+		}
+	}
 	if (isCollide) {
-		//if (oCircle->isColliding(oWallTop)) {
-        //    site = oCircle->checkSide(oWallTop);
-        //    if (site == 'l' || site == 'r') {
-        //        fDirectionX = oCircle->onCollisionEnter(fDeltaTime, fDirectionX, fDirectionY, site);
-        //    }
-        //    else {
-        //        fDirectionY = oCircle->onCollisionEnter(fDeltaTime, fDirectionX, fDirectionY, site);
-        //    }
+		if (bIsAlreadyInCollision == false)
+		{
+			onCollisionEnter(cSite, oGameObject);
+			move(fDeltaTime, oGameObject);
+		} 
+		else{
+			onCollisionStay(cSite, oGameObject);
+		}
 
-        //};
-		if (std::find(m_vObjectCollide.begin(), m_vObjectCollide.end(), oGameObject) != m_vObjectCollide.end()) {
-			onCollisionStay();
-		}
-		else {
-			m_vObjectCollide.push_back(oGameObject);
-			onCollisionEnter();
-		}
 	}
-
 	else {
-		onCollisionExit();
+		if (bIsAlreadyInCollision) {
+			onCollisionExit(cSite, oGameObject);
+		}
 	}
 }
-float GameObject::onCollisionEnter(float  fDeltaTime, float fDirectionX, float fDirectionY, char cSite) {
-	m_bIsCollide = true;
-	return bounce(fDeltaTime, fDirectionX, fDirectionY, cSite);
+void GameObject::onCollisionEnter(char cSite, GameObject* oGameObject) {
+	m_vObjectCollide.push_back(oGameObject);
+	std::cout << "a";
+	bounce(cSite, oGameObject);
 }
-void GameObject::onCollisionStay() {
+void GameObject::onCollisionStay(char cSite, GameObject* oGameObject) {
 	
 }
-void GameObject::onCollisionExit() {
-	m_bIsCollide = false;
+void GameObject::onCollisionExit(char cSite, GameObject* oGameObject) {
 	m_vObjectCollide.pop_back();
 }
 
@@ -98,7 +103,6 @@ bool GameObject::isColliding(GameObject* oGameObject) {
 			|| math::isPointBetween(oGameObject->m_iX + oGameObject->m_iLength, m_iX, m_iX + m_iLength)) ? iCollidValue += 1 : false;
 	}
 	if (iCollidValue == 2) {
-		m_vObjectCollide.push_back(oGameObject);
 		iCollidValue = 0;
 		return true;
 	}
@@ -109,38 +113,37 @@ bool GameObject::isColliding(GameObject* oGameObject) {
 }
 char GameObject::checkSide(GameObject* oGameObject)
 {
-	float overlabLR = std::min(m_iY + m_iLength, oGameObject->m_iY+ m_iLength) - std::max(m_iY + m_iLength, oGameObject->m_iY + oGameObject->m_iLength);
-	float overlabUD = std::min(m_iX + m_iWidth, oGameObject->m_iX+ m_iWidth) - std::max(m_iX + m_iWidth, oGameObject->m_iX + oGameObject->m_iWidth);
+	float overlapLR = std::min(m_iY + m_iLength, oGameObject->m_iY+ m_iLength) - std::max(m_iY + m_iLength, oGameObject->m_iY + oGameObject->m_iLength);
+	float overlapUD = std::min(m_iX + m_iWidth, oGameObject->m_iX+ m_iWidth) - std::max(m_iX + m_iWidth, oGameObject->m_iX + oGameObject->m_iWidth);
 
-	if (overlabLR > overlabUD) {
+	if (overlapLR > overlapUD) {
 		if (m_iX <= oGameObject->m_iX + oGameObject->m_iWidth and m_iX >= oGameObject->m_iX) {
-			std::cout << "right";
 			return 'r';
 		}
 		else {
-			std::cout << "left";
 			return 'l';
 		}
 	}
-	else if (overlabLR < overlabUD) {
+	else if (overlapLR < overlapUD) {
 		
 		if (m_iY + m_iLength >= oGameObject->m_iY and m_iY <= oGameObject->m_iY) {
-			std::cout << "up";
 			return 'u';
 		}
 		else {
-			std::cout << "down";
 			return 'd';
 		}
 	}
 }
-float GameObject::bounce(float  fDeltaTime, float fDirectionX, float fDirectionY, char cSite) {
+void GameObject::bounce( char cSite ,GameObject* oGameObject) {
+	
 	/*a changer si l on veux faire le bonus avec les balles qui collisionne*/
 	if(cSite == 'l' || cSite =='r') {
-		return fDirectionX = -fDirectionX;
+		oGameObject->m_fDirectionX -= oGameObject->m_fDirectionX;
 	}
 	else{
-		return fDirectionY = -fDirectionY;
+		std::cout << "avant " << oGameObject->m_fDirectionY;
+		oGameObject->m_fDirectionY = - oGameObject->m_fDirectionY;
+		std::cout << "apres" << oGameObject->m_fDirectionY;
 	} 
 		
 }
