@@ -18,7 +18,7 @@ public:
 	
 	sf::Shape* m_Shape;
 
-	GameObject(float iX, float iY, int iWitdh, int iLength, Window* oWindow);
+	GameObject(float iX, float iY, int iWitdh, int iLength, float fDirectionX, float fDirectionY, Window* oWindow);
 	GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY, Window* oWindow);
 
 	sf::Shape& getShape();

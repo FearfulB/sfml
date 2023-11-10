@@ -4,12 +4,13 @@
 #include <iostream>
 #include "windowManager.h"
 
-GameObject::GameObject(float iX, float iY, int iWidth, int iLength, Window* oWindow){
+GameObject::GameObject(float iX, float iY, int iWidth, int iLength, float fDirectionX, float fDirectionY, Window* oWindow){
 	m_iX = iX;
 	m_iY = iY;
 	m_iWidth = iWidth;
 	m_iLength = iLength;
-
+	m_fDirectionX = fDirectionX;
+	m_fDirectionY = fDirectionY;
 	m_Shape = new sf::RectangleShape(sf::Vector2f(m_iLength, m_iWidth));
 	m_Shape->setPosition(m_iX, m_iY);
 	(*oWindow).m_voGameWindowObjects.push_back(this);
@@ -43,7 +44,8 @@ void GameObject::move(float fDeltaTime, GameObject* oGameObject) {
 void GameObject::rotate(float vMousePositionX, float vMousePositionY) {
 	
 	int mouseAngle = -atan2(vMousePositionX - m_iX, vMousePositionY - m_iY) * 180 / 3.1459;
-
+	m_fDirectionX = vMousePositionX / sqrt(pow(vMousePositionX, 2) + pow(vMousePositionY, 2));
+	m_fDirectionY = vMousePositionY/ sqrt(pow(vMousePositionX, 2) + pow(vMousePositionY, 2));
 	m_Shape->setRotation(mouseAngle);
 
 }
