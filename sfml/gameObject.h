@@ -16,8 +16,8 @@ public:
 	std::vector <GameObject*> m_vObjectCollide;
 	sf::Shape* m_Shape;
 
-	GameObject(float iX, float iY, int iWitdh, int iLength, float fDirectionX, float fDirectionY);
-	GameObject(float iX, float iY, int iRadius);
+	GameObject(float iX, float iY, int iWitdh, int iLength);
+	GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY);
 
 	sf::Shape& getShape();
 	void move(float fDeltaTime, GameObject* oGameObject);

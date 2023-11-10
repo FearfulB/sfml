@@ -3,23 +3,24 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-GameObject::GameObject(float iX, float iY, int iWidth, int iLength, float fDirectionX, float fDirectionY)
-{
+GameObject::GameObject(float iX, float iY, int iWidth, int iLength){
 	m_iX = iX;
 	m_iY = iY;
 	m_iWidth = iWidth;
 	m_iLength = iLength;
-	m_fDirectionX = fDirectionX;
-	m_fDirectionY = fDirectionY;
+
 	m_Shape = new sf::RectangleShape(sf::Vector2f(m_iLength, m_iWidth));
 	m_Shape->setPosition(m_iX, m_iY);
 }
-GameObject::GameObject(float iX, float iY, int iRadius) {
+GameObject::GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY) {
 	m_iX = iX;
 	m_iY = iY;
 	m_iRadius = iRadius;
 	m_iLength = 2 * m_iRadius;
 	m_iWidth = 2 * m_iRadius;
+	/*a changer car c est le canon qui doit envoyer la position*/
+	m_fDirectionX = fDirectionX;
+	m_fDirectionY = fDirectionY;
 	m_Shape = new sf::CircleShape(m_iRadius);
 	m_Shape->setPosition(m_iX, m_iY);
 }
@@ -137,10 +138,10 @@ void GameObject::bounce( char cSite ,GameObject* oGameObject) {
 	
 	/*a changer si l on veux faire le bonus avec les balles qui collisionne*/
 	if(cSite == 'l' || cSite =='r') {
-		oGameObject->m_fDirectionX = - oGameObject->m_fDirectionX;
+		m_fDirectionX = - m_fDirectionX;
 	}
 	else{
-		oGameObject->m_fDirectionY = - oGameObject->m_fDirectionY;
+		m_fDirectionY = - m_fDirectionY;
 	} 
 		
 }
