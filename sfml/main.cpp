@@ -19,12 +19,12 @@ int main(int argc, char** argv)
     float fDirectionX = -1 / sqrt(2);
     float fDirectionY = -1 / sqrt(2);
     /*std::cout << fDirectionX;*/
-    GameObject* oCircle = new GameObject(340, 60, 10);
+    GameObject* oCircle = new GameObject(30, 100, 10);
     GameObject* rect = new GameObject(450, 200, 100, 100, fDirectionX, fDirectionY);
     GameObject* oCanon = new GameObject(310, 410, 50, 20, fDirectionX, fDirectionY);
-    GameObject* oWallLeft = new GameObject(0, 0, 480, 10, fDirectionX, fDirectionY);
-    GameObject* oWallRight = new GameObject(630, 0, 480, 10, fDirectionX, fDirectionY);
-    GameObject* oWallTop = new GameObject(0, 0, 10, 630, fDirectionX, fDirectionY);
+    GameObject* oWallLeft = new GameObject(-10, 0, 480, 10, fDirectionX, fDirectionY);
+    GameObject* oWallRight = new GameObject(640, 0, 480, 10, fDirectionX, fDirectionY);
+    GameObject* oWallTop = new GameObject(0, -10, 10, 630, fDirectionX, fDirectionY);
 
     float fDeltaTime = 0;
     //GameLoop
@@ -39,20 +39,8 @@ int main(int argc, char** argv)
             if (oEvent.type == sf::Event::Closed)
                 oWindow.close();
         }
-
-        oCircle->move(fDeltaTime, oCanon);
-        oCircle->handleCollision(oWallTop, fDeltaTime);
-        //UPDATE
-        //if (oCircle->isColliding(oWallTop)) {
-        //    site = oCircle->checkSide(oWallTop);
-        //    if (site == 'l' || site == 'r') {
-        //        fDirectionX = oCircle->onCollisionEnter(fDeltaTime, fDirectionX, fDirectionY, site);
-        //    }
-        //    else {
-        //        fDirectionY = oCircle->onCollisionEnter(fDeltaTime, fDirectionX, fDirectionY, site);
-        //    }
-
-        //};
+        oCircle->move(fDeltaTime, oWallLeft);
+        oCircle->handleCollision(oWallLeft, fDeltaTime);
        
          oCanon->rotate(localPosition.x, localPosition.y);
         //DRAW

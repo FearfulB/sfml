@@ -74,7 +74,6 @@ void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime) {
 }
 void GameObject::onCollisionEnter(char cSite, GameObject* oGameObject) {
 	m_vObjectCollide.push_back(oGameObject);
-	std::cout << "a";
 	bounce(cSite, oGameObject);
 }
 void GameObject::onCollisionStay(char cSite, GameObject* oGameObject) {
@@ -138,12 +137,10 @@ void GameObject::bounce( char cSite ,GameObject* oGameObject) {
 	
 	/*a changer si l on veux faire le bonus avec les balles qui collisionne*/
 	if(cSite == 'l' || cSite =='r') {
-		oGameObject->m_fDirectionX -= oGameObject->m_fDirectionX;
+		oGameObject->m_fDirectionX = - oGameObject->m_fDirectionX;
 	}
 	else{
-		std::cout << "avant " << oGameObject->m_fDirectionY;
 		oGameObject->m_fDirectionY = - oGameObject->m_fDirectionY;
-		std::cout << "apres" << oGameObject->m_fDirectionY;
 	} 
 		
 }
