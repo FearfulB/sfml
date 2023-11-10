@@ -13,8 +13,9 @@ int main(int argc, char** argv)
     //init
 
     //Création d'une fenêtre
-	sf::RenderWindow oWindow(sf::VideoMode(640, 480), "Frozen Bubble");
-    
+	/*sf::RenderWindow oWindow(sf::VideoMode(640, 480), "Frozen Bubble");*/
+    Window* pWindow = new Window(640, 480, "Casse Brique");
+
     sf::Clock oClock;
     float fDirectionX = -1 / sqrt(2);
     float fDirectionY = -1 / sqrt(2);
@@ -28,32 +29,31 @@ int main(int argc, char** argv)
 
     float fDeltaTime = 0;
     //GameLoop
-    while (oWindow.isOpen())
+    while (pWindow->m_oWindow->isOpen())
     {
-        sf::Vector2i localPosition = sf::Mouse::getPosition(oWindow);
+        sf::Vector2i localPosition = sf::Mouse::getPosition((*pWindow->m_oWindow));
         //EVENT
         sf::Event oEvent;
 
-        while (oWindow.pollEvent(oEvent))
+        while (pWindow->m_oWindow->pollEvent(oEvent))
         {
             if (oEvent.type == sf::Event::Closed)
-                oWindow.close();
+                pWindow->m_oWindow->close();
         }
         oCircle->move(fDeltaTime, oWallLeft);
         oCircle->handleCollision(oWallLeft, fDeltaTime);
        
-         oCanon->rotate(localPosition.x, localPosition.y);
+            oCanon->rotate(localPosition.x, localPosition.y);
         //DRAW
 
-        oWindow.clear();
-        oWindow.draw(oCircle->getShape());
-        oWindow.draw(rect->getShape());
-        oWindow.draw(oWallLeft->getShape());
-        oWindow.draw(oWallRight->getShape());
-        oWindow.draw(oWallTop->getShape());
-        oWindow.draw(oCanon->getShape());
-
-        oWindow.display();
+        pWindow->m_oWindow->clear();
+        pWindow->m_oWindow->draw(oCircle->getShape());
+        pWindow->m_oWindow->draw(rect->getShape());
+        pWindow->m_oWindow->draw(oWallLeft->getShape());
+        pWindow->m_oWindow->draw(oWallRight->getShape());
+        pWindow->m_oWindow->draw(oWallTop->getShape());
+        pWindow->m_oWindow->draw(oCanon->getShape());
+        pWindow->m_oWindow->display();
 
         fDeltaTime = oClock.restart().asSeconds();
     }

@@ -144,7 +144,12 @@ void GameObject::bounce( char cSite ,GameObject* oGameObject) {
 	} 
 		
 }
+void GameObject::removeObject(GameObject* oGameObject) {
+	//if (m_iY > 640 || m_iX + m_iLength < 0 || m_iX > 480) {
+	//	delete 		
+	//}
 
+}
 GameObject::~GameObject()
 {
 	delete m_Shape;

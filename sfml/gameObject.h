@@ -11,7 +11,6 @@ public:
 	int m_iWidth;
 	int m_iLength;
 	int m_iRadius;
-	bool m_bIsCollide;
 	float m_fDirectionX;
 	float m_fDirectionY;
 	std::vector <GameObject*> m_vObjectCollide;
@@ -30,6 +29,7 @@ public:
 	void onCollisionExit(char cSite, GameObject* oGameObject);
 	void bounce(char cSite, GameObject* oGameObject);
 	char checkSide(GameObject* oGameObject);
+	void removeObject(GameObject* oGameObject);
 
 	~GameObject();
 };

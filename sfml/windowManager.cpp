@@ -1,8 +1,10 @@
 #include "windowManager.h"
+#include "gameObject.h"
 
-Window::Window()
+Window::Window(int iWitdh, int iHeight, std::string sTitle)
 {
-	window.setTitle("Casse Brique");
-
-	/*window(sf::VideoMode(640, 480), "Frozen Bubble");*/
+	m_oWindow = new sf::RenderWindow(sf::VideoMode(iWitdh, iHeight), sTitle);
 }
+//void WindowManager::display(GameObject* oGameObject) {
+//	
+//}
