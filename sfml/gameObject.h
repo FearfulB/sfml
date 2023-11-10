@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+class Window;
 
 class GameObject
 {
@@ -13,11 +14,12 @@ public:
 	int m_iRadius;
 	float m_fDirectionX;
 	float m_fDirectionY;
-	std::vector <GameObject*> m_vObjectCollide;
+	std::vector <GameObject*> m_voObjectCollide;
+	
 	sf::Shape* m_Shape;
 
-	GameObject(float iX, float iY, int iWitdh, int iLength);
-	GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY);
+	GameObject(float iX, float iY, int iWitdh, int iLength, Window* oWindow);
+	GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY, Window* oWindow);
 
 	sf::Shape& getShape();
 	void move(float fDeltaTime, GameObject* oGameObject);
@@ -29,7 +31,6 @@ public:
 	void onCollisionExit(char cSite, GameObject* oGameObject);
 	void bounce(char cSite, GameObject* oGameObject);
 	char checkSide(GameObject* oGameObject);
-	void removeObject(GameObject* oGameObject);
 
 	~GameObject();
 };

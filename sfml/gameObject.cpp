@@ -2,8 +2,9 @@
 #include "math.h"
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "windowManager.h"
 
-GameObject::GameObject(float iX, float iY, int iWidth, int iLength){
+GameObject::GameObject(float iX, float iY, int iWidth, int iLength, Window* oWindow){
 	m_iX = iX;
 	m_iY = iY;
 	m_iWidth = iWidth;
@@ -11,8 +12,10 @@ GameObject::GameObject(float iX, float iY, int iWidth, int iLength){
 
 	m_Shape = new sf::RectangleShape(sf::Vector2f(m_iLength, m_iWidth));
 	m_Shape->setPosition(m_iX, m_iY);
+	(*oWindow).m_voGameWindowObjects.push_back(this);
+	(*oWindow).m_voRectCollide.push_back(this);
 }
-GameObject::GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY) {
+GameObject::GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY, Window* oWindow) {
 	m_iX = iX;
 	m_iY = iY;
 	m_iRadius = iRadius;
@@ -23,6 +26,8 @@ GameObject::GameObject(float iX, float iY, int iRadius, float fDirectionX, float
 	m_fDirectionY = fDirectionY;
 	m_Shape = new sf::CircleShape(m_iRadius);
 	m_Shape->setPosition(m_iX, m_iY);
+	(*oWindow).m_voGameWindowObjects.push_back(this);
+	(*oWindow).m_voCircleCollide.push_back(this);
 }
 sf::Shape& GameObject::getShape() {
 	return *m_Shape;
@@ -30,8 +35,8 @@ sf::Shape& GameObject::getShape() {
 
 void GameObject::move(float fDeltaTime, GameObject* oGameObject) {
 	/*std::cout << m_fDirectionX << std::endl;*/
-	m_iX += oGameObject->m_fDirectionX * fDeltaTime * 60.f;
-	m_iY += oGameObject->m_fDirectionY * fDeltaTime * 60.f;
+	m_iX += oGameObject->m_fDirectionX * fDeltaTime * 300.f;
+	m_iY += oGameObject->m_fDirectionY * fDeltaTime * 300.f;
 	m_Shape->setPosition(m_iX, m_iY);
 }
 
@@ -48,13 +53,9 @@ void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime) {
 	
 	bool isCollide = isColliding(oGameObject);
 	bool bIsAlreadyInCollision = false;
-	
 	char cSite = this->checkSide(oGameObject);
-	for (int i = 0; i < m_vObjectCollide.size(); i++) {
-		if (m_vObjectCollide[i] == oGameObject) {
-			bIsAlreadyInCollision = true;
-			break;
-		}
+	if (std::count(m_voObjectCollide.begin(), m_voObjectCollide.end(), oGameObject)) {
+		bIsAlreadyInCollision = true;
 	}
 	if (isCollide) {
 		if (bIsAlreadyInCollision == false)
@@ -65,7 +66,6 @@ void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime) {
 		else{
 			onCollisionStay(cSite, oGameObject);
 		}
-
 	}
 	else {
 		if (bIsAlreadyInCollision) {
@@ -74,14 +74,21 @@ void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime) {
 	}
 }
 void GameObject::onCollisionEnter(char cSite, GameObject* oGameObject) {
-	m_vObjectCollide.push_back(oGameObject);
+	m_voObjectCollide.push_back(oGameObject);
 	bounce(cSite, oGameObject);
 }
 void GameObject::onCollisionStay(char cSite, GameObject* oGameObject) {
 	
 }
 void GameObject::onCollisionExit(char cSite, GameObject* oGameObject) {
-	m_vObjectCollide.pop_back();
+	int iObjectIndex = 0;
+	for (int i = 0; i < m_voObjectCollide.size(); i++) {
+		if (m_voObjectCollide[i] == oGameObject) {
+			iObjectIndex = i;
+			break;
+		}
+	}
+	m_voObjectCollide.erase(m_voObjectCollide.begin() + iObjectIndex);
 }
 
 bool GameObject::isColliding(GameObject* oGameObject) {
@@ -145,12 +152,7 @@ void GameObject::bounce( char cSite ,GameObject* oGameObject) {
 	} 
 		
 }
-void GameObject::removeObject(GameObject* oGameObject) {
-	//if (m_iY > 640 || m_iX + m_iLength < 0 || m_iX > 480) {
-	//	delete 		
-	//}
 
-}
 GameObject::~GameObject()
 {
 	delete m_Shape;
