@@ -7,7 +7,7 @@ Window::Window(int iWitdh, int iHeight, std::string sTitle)
 }
 void Window::display() {
 	for (int i = 0; i < m_voGameWindowObjects.size(); i++) {
-		m_oWindow->draw(m_voGameWindowObjects[i]->getShape());
+		m_voGameWindowObjects[i]->draw(*this);
 	}
 	m_oWindow->display();
 }

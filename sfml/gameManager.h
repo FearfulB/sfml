@@ -12,7 +12,8 @@ public:
 	static void Init();
 	static GameManager* Get();
 	void mainLoop();
-
+	std::vector<GameObject*> m_voRectCollide;
+	std::vector<GameObject*> m_voCircleCollide;
 	Window* m_oWindow;
 	
 	GameObject* m_oRect;

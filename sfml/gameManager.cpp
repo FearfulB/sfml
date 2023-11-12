@@ -7,14 +7,12 @@ GameManager::GameManager()
     float fDirectionX = -1 / sqrt(2);
     float fDirectionY = -1 / sqrt(2);
 
-    m_oRect = new GameObject(450, 200, 100, 100, fDirectionX, fDirectionY, m_oWindow);
-    m_oCanon = new GameObject(310, 410, 50, 20, fDirectionX, fDirectionY, m_oWindow);
-    m_oCircle = new GameObject(m_oCanon->m_iX, m_oCanon->m_iY, 10, fDirectionX, fDirectionY, m_oWindow);
-    m_oWallLeft = new GameObject(-10, 0, 480, 10, fDirectionX, fDirectionY, m_oWindow);
-    m_oWallRight = new GameObject(640, 0, 480, 10, fDirectionX, fDirectionY, m_oWindow);
-    m_oWallTop = new GameObject(0, -10, 10, 630, fDirectionX, fDirectionY, m_oWindow);
-
-    
+    m_oRect = new GameObject(450, 200, 100, 100, fDirectionX, fDirectionY, m_oWindow, this);
+    m_oCanon = new GameObject(310, 410, 50, 20, fDirectionX, fDirectionY, m_oWindow, this);
+    m_oCircle = new GameObject(m_oCanon->m_iX, m_oCanon->m_iY, 10, fDirectionX, fDirectionY, m_oWindow, this);
+    m_oWallLeft = new GameObject(-10, 0, 480, 10, fDirectionX, fDirectionY, m_oWindow, this);
+    m_oWallRight = new GameObject(640, 0, 480, 10, fDirectionX, fDirectionY, m_oWindow, this);
+    m_oWallTop = new GameObject(0, -10, 10, 630, fDirectionX, fDirectionY, m_oWindow, this);
 
 }
 
@@ -58,12 +56,12 @@ void GameManager::Init()
          //}
          /*if (move) {*/
          m_oCircle->move(fDeltaTime, m_oCircle);
-         for (int i = 0; i < m_oWindow->m_voRectCollide.size(); i++) {
-             m_oCircle->handleCollision(m_oWindow->m_voRectCollide[i], fDeltaTime);
+         for (int i = 0; i < m_voRectCollide.size(); i++) {
+             m_oCircle->handleCollision(m_voRectCollide[i], fDeltaTime);
          }
          //}
          /*oCircle->removeObject(pWindow);*/
-         m_oCanon->rotate(localPosition.x, localPosition.y);
+         m_oCanon->setRotation(localPosition.x, localPosition.y);
 
          //DRAW
          m_oWindow->m_oWindow->clear();

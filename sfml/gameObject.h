@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 class Window;
+class GameManager;
 
 class GameObject
 {
@@ -18,12 +19,16 @@ public:
 	
 	sf::Shape* m_Shape;
 
-	GameObject(float iX, float iY, int iWitdh, int iLength, float fDirectionX, float fDirectionY, Window* oWindow);
-	GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY, Window* oWindow);
+	GameObject(float iX, float iY, int iWitdh, int iLength, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame);
+	GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame);
 
 	sf::Shape& getShape();
+	void setPosition(float fX, float fY, float fRatioX = 0.5f, float fRationY = 0.5f);
+	void setRotation(float vMousePositionX, float vMousePositionY, float fRatioX = 0.5f, float fRatioY = 0.5f);
+	void draw(Window& oWindow);
+	void setDirection(float fX, float fY);
 	void move(float fDeltaTime, GameObject* oGameObject);
-	void rotate(float vMousePositionX, float vMousePositionY);
+
 	void handleCollision(GameObject* oGameObject, float fDeltaPosition);
 	void onCollisionEnter( char cSite, GameObject* oGameObject);
 	bool isColliding(GameObject* oGameObject);

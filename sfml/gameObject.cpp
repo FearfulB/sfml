@@ -1,10 +1,13 @@
 #include "gameObject.h"
+#include "windowManager.h"
+#include "gameManager.h"
 #include "math.h"
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include "windowManager.h"
 
-GameObject::GameObject(float iX, float iY, int iWidth, int iLength, float fDirectionX, float fDirectionY, Window* oWindow){
+
+GameObject::GameObject(float iX, float iY, int iWidth, int iLength, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame){
 	m_iX = iX;
 	m_iY = iY;
 	m_iWidth = iWidth;
@@ -12,11 +15,11 @@ GameObject::GameObject(float iX, float iY, int iWidth, int iLength, float fDirec
 	m_fDirectionX = fDirectionX;
 	m_fDirectionY = fDirectionY;
 	m_Shape = new sf::RectangleShape(sf::Vector2f(m_iLength, m_iWidth));
-	m_Shape->setPosition(m_iX, m_iY);
+	this->setPosition(m_iX, m_iY);
 	(*oWindow).m_voGameWindowObjects.push_back(this);
-	(*oWindow).m_voRectCollide.push_back(this);
+	(*oGame).m_voRectCollide.push_back(this);
 }
-GameObject::GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY, Window* oWindow) {
+GameObject::GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame) {
 	m_iX = iX;
 	m_iY = iY;
 	m_iRadius = iRadius;
@@ -26,29 +29,45 @@ GameObject::GameObject(float iX, float iY, int iRadius, float fDirectionX, float
 	m_fDirectionX = fDirectionX;
 	m_fDirectionY = fDirectionY;
 	m_Shape = new sf::CircleShape(m_iRadius);
-	m_Shape->setPosition(m_iX, m_iY);
+	this->setPosition(m_iX, m_iY);
 	(*oWindow).m_voGameWindowObjects.push_back(this);
-	(*oWindow).m_voCircleCollide.push_back(this);
+	(*oGame).m_voCircleCollide.push_back(this);
 }
 sf::Shape& GameObject::getShape() {
 	return *m_Shape;
+}
+
+void GameObject::setPosition(float fX, float fY, float fRatioX, float fRationY) {
+	m_Shape->setOrigin(fRatioX,fRationY);
+	m_Shape->setPosition(fX, fY);
+}
+
+void GameObject::setRotation(float vMousePositionX, float vMousePositionY, float fRatioX, float fRatioY) {
+
+	int mouseAngle = -atan2(vMousePositionX - m_iX, vMousePositionY - m_iY) * 180 / 3.1459;
+	this->setDirection(vMousePositionX, vMousePositionY);
+	m_Shape->setOrigin(fRatioX, fRatioY);
+	m_Shape->setRotation(mouseAngle);
+
+}
+
+void GameObject::draw(Window& oWindow) {
+	oWindow.m_oWindow->draw(getShape());
+}
+
+void GameObject::setDirection(float fX, float fY) {
+	m_fDirectionX  = fX / sqrt(pow(fX, 2) + pow(fY, 2));
+	m_fDirectionY = fY / sqrt(pow(fX, 2) + pow(fY, 2));
 }
 
 void GameObject::move(float fDeltaTime, GameObject* oGameObject) {
 	/*std::cout << m_fDirectionX << std::endl;*/
 	m_iX += oGameObject->m_fDirectionX * fDeltaTime * 300.f;
 	m_iY += oGameObject->m_fDirectionY * fDeltaTime * 300.f;
-	m_Shape->setPosition(m_iX, m_iY);
+	this->setPosition(m_iX, m_iY);
 }
 
-void GameObject::rotate(float vMousePositionX, float vMousePositionY) {
-	
-	int mouseAngle = -atan2(vMousePositionX - m_iX, vMousePositionY - m_iY) * 180 / 3.1459;
-	m_fDirectionX = vMousePositionX / sqrt(pow(vMousePositionX, 2) + pow(vMousePositionY, 2));
-	m_fDirectionY = vMousePositionY/ sqrt(pow(vMousePositionX, 2) + pow(vMousePositionY, 2));
-	m_Shape->setRotation(mouseAngle);
 
-}
 
 
 void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime) {
