@@ -133,6 +133,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ball.h" />
+    <ClInclude Include="canon.h" />
     <ClInclude Include="gameManager.h" />
     <ClInclude Include="gameObject.h" />
     <ClInclude Include="inputManager.h" />
@@ -141,6 +143,8 @@
     <ClInclude Include="windowManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ball.cpp" />
+    <ClCompile Include="canon.cpp" />
     <ClCompile Include="gameManager.cpp" />
     <ClCompile Include="gameObject.cpp" />
     <ClCompile Include="inputManager.cpp" />

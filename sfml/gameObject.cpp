@@ -1,88 +1,85 @@
 #include "gameObject.h"
 #include "windowManager.h"
 #include "gameManager.h"
+#include "canon.h"
 #include "math.h"
+#include "ball.h"
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
 
-GameObject::GameObject(float iX, float iY, int iWidth, int iLength, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame){
+GameObject::GameObject(float iX, float iY, int iWidth, int iLength , Window* oWindow, GameManager* oGame){
 	m_iX = iX;
 	m_iY = iY;
 	m_iWidth = iWidth;
 	m_iLength = iLength;
-	m_fDirectionX = fDirectionX;
-	m_fDirectionY = fDirectionY;
 	m_Shape = new sf::RectangleShape(sf::Vector2f(m_iLength, m_iWidth));
 	this->setPosition(m_iX, m_iY);
 	(*oWindow).m_voGameWindowObjects.push_back(this);
 	(*oGame).m_voRectCollide.push_back(this);
 }
-GameObject::GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame) {
+GameObject::GameObject(float iX, float iY, int iRadius, Window* oWindow, GameManager* oGame) {
 	m_iX = iX;
 	m_iY = iY;
 	m_iRadius = iRadius;
 	m_iLength = 2 * m_iRadius;
 	m_iWidth = 2 * m_iRadius;
-	/*a changer car c est le canon qui doit envoyer la position*/
-	m_fDirectionX = fDirectionX;
-	m_fDirectionY = fDirectionY;
+
 	m_Shape = new sf::CircleShape(m_iRadius);
 	this->setPosition(m_iX, m_iY);
 	(*oWindow).m_voGameWindowObjects.push_back(this);
-	(*oGame).m_voCircleCollide.push_back(this);
+	
 }
+
 sf::Shape& GameObject::getShape() {
 	return *m_Shape;
 }
+
+float GameObject::getX() {
+	return m_iX;
+}
+
+float GameObject::getY(){
+	return m_iY;
+}
+
+int GameObject::getWidth(){
+	return m_iWidth;
+}
+
+int GameObject::getLength(){
+	return m_iLength;
+}
+
+int GameObject::getRadius(){
+	return m_iRadius;
+}
+
 
 void GameObject::setPosition(float fX, float fY, float fRatioX, float fRationY) {
 	m_Shape->setOrigin(fRatioX,fRationY);
 	m_Shape->setPosition(fX, fY);
 }
 
-void GameObject::setRotation(float vMousePositionX, float vMousePositionY, float fRatioX, float fRatioY) {
 
-	int mouseAngle = -atan2(vMousePositionX - m_iX, vMousePositionY - m_iY) * 180 / 3.1459;
-	this->setDirection(vMousePositionX, vMousePositionY);
-	m_Shape->setOrigin(fRatioX, fRatioY);
-	m_Shape->setRotation(mouseAngle);
-
-}
 
 void GameObject::draw(Window& oWindow) {
 	oWindow.m_oWindow->draw(getShape());
 }
 
-void GameObject::setDirection(float fX, float fY) {
-	m_fDirectionX  = fX / sqrt(pow(fX, 2) + pow(fY, 2));
-	m_fDirectionY = fY / sqrt(pow(fX, 2) + pow(fY, 2));
-}
-
-void GameObject::move(float fDeltaTime, GameObject* oGameObject) {
-	/*std::cout << m_fDirectionX << std::endl;*/
-	m_iX += oGameObject->m_fDirectionX * fDeltaTime * 300.f;
-	m_iY += oGameObject->m_fDirectionY * fDeltaTime * 300.f;
-	this->setPosition(m_iX, m_iY);
-}
-
-
-
-
-void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime) {
+void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime, Ball* oBall) {
 	
 	bool isCollide = isColliding(oGameObject);
 	bool bIsAlreadyInCollision = false;
-	char cSite = this->checkSide(oGameObject);
+	char cSite = this->getSide(oGameObject);
 	if (std::count(m_voObjectCollide.begin(), m_voObjectCollide.end(), oGameObject)) {
 		bIsAlreadyInCollision = true;
 	}
 	if (isCollide) {
 		if (bIsAlreadyInCollision == false)
 		{
-			onCollisionEnter(cSite, oGameObject);
-			move(fDeltaTime, oGameObject);
+			onCollisionEnter(cSite, oGameObject, oBall);
 		} 
 		else{
 			onCollisionStay(cSite, oGameObject);
@@ -94,9 +91,9 @@ void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime) {
 		}
 	}
 }
-void GameObject::onCollisionEnter(char cSite, GameObject* oGameObject) {
+void GameObject::onCollisionEnter(char cSite, GameObject* oGameObject, Ball* oBall) {
 	m_voObjectCollide.push_back(oGameObject);
-	bounce(cSite, oGameObject);
+	oBall->bounce(cSite);
 }
 void GameObject::onCollisionStay(char cSite, GameObject* oGameObject) {
 	
@@ -139,7 +136,7 @@ bool GameObject::isColliding(GameObject* oGameObject) {
 		return false;
 	}
 }
-char GameObject::checkSide(GameObject* oGameObject)
+char GameObject::getSide(GameObject* oGameObject)
 {
 	float overlapLR = std::min(m_iY + m_iLength, oGameObject->m_iY+ m_iLength) - std::max(m_iY + m_iLength, oGameObject->m_iY + oGameObject->m_iLength);
 	float overlapUD = std::min(m_iX + m_iWidth, oGameObject->m_iX+ m_iWidth) - std::max(m_iX + m_iWidth, oGameObject->m_iX + oGameObject->m_iWidth);
@@ -162,17 +159,7 @@ char GameObject::checkSide(GameObject* oGameObject)
 		}
 	}
 }
-void GameObject::bounce( char cSite ,GameObject* oGameObject) {
-	
-	/*a changer si l on veux faire le bonus avec les balles qui collisionne*/
-	if(cSite == 'l' || cSite =='r') {
-		m_fDirectionX = - m_fDirectionX;
-	}
-	else{
-		m_fDirectionY = - m_fDirectionY;
-	} 
-		
-}
+
 
 GameObject::~GameObject()
 {

@@ -2,7 +2,10 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+
+class Ball;
 class Window;
+class Cannon;
 class GameManager;
 
 class GameObject
@@ -19,23 +22,24 @@ public:
 	
 	sf::Shape* m_Shape;
 
-	GameObject(float iX, float iY, int iWitdh, int iLength, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame);
-	GameObject(float iX, float iY, int iRadius, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame);
+	GameObject(float iX, float iY, int iWitdh, int iLength, Window* oWindow, GameManager* oGame);
+	GameObject(float iX, float iY, int iRadius, Window* oWindow, GameManager* oGame);
+
+	float getX();
+	float getY();
+	int getWidth();
+	int getLength();
+	int getRadius();
 
 	sf::Shape& getShape();
 	void setPosition(float fX, float fY, float fRatioX = 0.5f, float fRationY = 0.5f);
-	void setRotation(float vMousePositionX, float vMousePositionY, float fRatioX = 0.5f, float fRatioY = 0.5f);
 	void draw(Window& oWindow);
-	void setDirection(float fX, float fY);
-	void move(float fDeltaTime, GameObject* oGameObject);
-
-	void handleCollision(GameObject* oGameObject, float fDeltaPosition);
-	void onCollisionEnter( char cSite, GameObject* oGameObject);
+	void handleCollision(GameObject* oGameObject, float fDeltaPosition, Ball* oBall);
+	void onCollisionEnter( char cSite, GameObject* oGameObject, Ball* oBall);
 	bool isColliding(GameObject* oGameObject);
 	void onCollisionStay(char cSite, GameObject* oGameObject);
 	void onCollisionExit(char cSite, GameObject* oGameObject);
-	void bounce(char cSite, GameObject* oGameObject);
-	char checkSide(GameObject* oGameObject);
+	char getSide(GameObject* oGameObject);
 
 	~GameObject();
 };
