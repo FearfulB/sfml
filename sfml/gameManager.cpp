@@ -13,7 +13,6 @@ GameManager::GameManager()
     if (!fichier.is_open()) {
         std::cerr << "Could not open the file - '" << sFileName << "'" << std::endl;
     }
-    int iNumber; 
     std::string line;
 
     while (getline(fichier, line)) {
