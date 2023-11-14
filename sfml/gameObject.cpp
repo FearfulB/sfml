@@ -15,7 +15,7 @@ GameObject::GameObject(float iX, float iY, int iWidth, int iLength , Window* oWi
 	m_iWidth = iWidth;
 	m_iLength = iLength;
 	m_Shape = new sf::RectangleShape(sf::Vector2f(m_iLength, m_iWidth));
-	this->setPosition(m_iX, m_iY);
+	setPosition(m_iX, m_iY);
 	(*oWindow).m_voGameWindowObjects.push_back(this);
 	(*oGame).m_voRectCollide.push_back(this);
 }
@@ -57,8 +57,8 @@ int GameObject::getRadius(){
 }
 
 
-void GameObject::setPosition(float fX, float fY, float fRatioX, float fRationY) {
-	m_Shape->setOrigin(fRatioX,fRationY);
+void GameObject::setPosition(float fX, float fY, float fRatioX, float fRatioY) {
+	m_Shape->setOrigin(fRatioX, fRatioY);
 	m_Shape->setPosition(fX, fY);
 }
 
@@ -72,7 +72,7 @@ void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime, Ball
 	
 	bool isCollide = isColliding(oGameObject);
 	bool bIsAlreadyInCollision = false;
-	char cSite = this->getSide(oGameObject);
+	char cSite = oBall->getSide(oGameObject);
 	if (std::count(m_voObjectCollide.begin(), m_voObjectCollide.end(), oGameObject)) {
 		bIsAlreadyInCollision = true;
 	}
@@ -138,8 +138,9 @@ bool GameObject::isColliding(GameObject* oGameObject) {
 }
 char GameObject::getSide(GameObject* oGameObject)
 {
-	float overlapLR = std::min(m_iY + m_iLength, oGameObject->m_iY+ m_iLength) - std::max(m_iY + m_iLength, oGameObject->m_iY + oGameObject->m_iLength);
-	float overlapUD = std::min(m_iX + m_iWidth, oGameObject->m_iX+ m_iWidth) - std::max(m_iX + m_iWidth, oGameObject->m_iX + oGameObject->m_iWidth);
+	float overlapLR = std::min(m_iY + m_iLength, oGameObject->m_iY + m_iLength) - std::max(m_iY + m_iLength, oGameObject->m_iY + oGameObject->m_iLength);
+	std::cout << overlapLR << std::endl;
+	float overlapUD = std::min(m_iX + m_iWidth, oGameObject->m_iX + m_iWidth) - std::max(m_iX + m_iWidth, oGameObject->m_iX + oGameObject->m_iWidth);
 
 	if (overlapLR > overlapUD) {
 		if (m_iX <= oGameObject->m_iX + oGameObject->m_iWidth and m_iX >= oGameObject->m_iX) {
@@ -150,7 +151,7 @@ char GameObject::getSide(GameObject* oGameObject)
 		}
 	}
 	else if (overlapLR < overlapUD) {
-		
+
 		if (m_iY + m_iLength >= oGameObject->m_iY and m_iY <= oGameObject->m_iY) {
 			return 'u';
 		}
@@ -158,8 +159,10 @@ char GameObject::getSide(GameObject* oGameObject)
 			return 'd';
 		}
 	}
+	else {
+		return 'p';
+	}
 }
-
 
 GameObject::~GameObject()
 {

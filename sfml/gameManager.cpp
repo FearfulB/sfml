@@ -1,6 +1,5 @@
 #include "gameManager.h"
 
-
 GameManager::GameManager()
 {
     m_oWindow = new Window(640, 480, "Casse Brique");
@@ -11,7 +10,9 @@ GameManager::GameManager()
     m_oWallLeft = new GameObject(-10, 0, 480, 10, m_oWindow, this);
     m_oWallRight = new GameObject(640, 0, 480, 10, m_oWindow, this);
     m_oWallTop = new GameObject(0, -10, 10, 630, m_oWindow, this);
-
+    for (int i = 0; i < 10; i++) {
+        Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40,20,50,m_oWindow,this);
+    }
 }
 
 GameManager* GameManager::pInstance = nullptr;

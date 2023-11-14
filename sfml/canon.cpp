@@ -25,6 +25,4 @@ void Cannon::setOrientation(float vMousePositionX, float vMousePositionY, float 
 void Cannon::setDirection(float fX, float fY) {
 	m_fDirectionX = fX / (float)sqrt(pow(fX, 2) + pow(fY, 2));
 	m_fDirectionY = fY / (float)sqrt(pow(fX, 2) + pow(fY, 2));
-	std::cout << "dans set direction" << m_fDirectionX << std::endl;
-	std::cout << "dans set direction" << m_fDirectionY << std::endl;
 }

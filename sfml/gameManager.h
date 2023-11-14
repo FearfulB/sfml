@@ -3,6 +3,7 @@
 #include "gameObject.h"
 #include "canon.h"
 #include "ball.h"
+#include "brick.h"
 
 class GameManager
 {
@@ -17,14 +18,15 @@ public:
 	void mainLoop();
 	std::vector<GameObject*> m_voRectCollide;
 	std::vector<Ball*> m_voCircleCollide;
+	std::vector<Brick*> m_voBrickCollide;
 	Window* m_oWindow;
-	
+
 	Cannon* m_oCannon;
 	GameObject* m_oRect;
-	
+
 	/*GameObject* m_oCircle;*/
 	GameObject* m_oWallLeft;
 	GameObject* m_oWallRight;
 	GameObject* m_oWallTop;
-	
+
 };

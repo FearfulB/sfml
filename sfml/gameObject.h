@@ -32,7 +32,7 @@ public:
 	int getRadius();
 
 	sf::Shape& getShape();
-	void setPosition(float fX, float fY, float fRatioX = 0.5f, float fRationY = 0.5f);
+	void setPosition(float fX, float fY, float fRatioX = 0.5f, float fRatioY = 0.5f);
 	void draw(Window& oWindow);
 	void handleCollision(GameObject* oGameObject, float fDeltaPosition, Ball* oBall);
 	void onCollisionEnter( char cSite, GameObject* oGameObject, Ball* oBall);
