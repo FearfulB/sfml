@@ -16,6 +16,11 @@ public:
 	static void Init();
 	static GameManager* Get();
 	void mainLoop();
+	int grid[40] = {0, 0, 0, 0, 0, 0, 0, 0,
+		0, 3, 3, 2, 1, 2, 3, 0,
+		0, 3, 3, 1, 1, 1, 2, 0,
+		0, 3, 3, 2, 1, 2, 3, 0,
+		0, 3, 3, 3, 3, 3, 3, 0 };
 	std::vector<GameObject*> m_voRectCollide;
 	std::vector<Ball*> m_voCircleCollide;
 	std::vector<Brick*> m_voBrickCollide;

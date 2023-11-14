@@ -7,6 +7,7 @@ class Ball;
 class Window;
 class Cannon;
 class GameManager;
+class Brick;
 
 class GameObject
 {

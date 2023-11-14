@@ -4,6 +4,7 @@
 #include "canon.h"
 #include "math.h"
 #include "ball.h"
+#include "brick.h"
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -139,7 +140,6 @@ bool GameObject::isColliding(GameObject* oGameObject) {
 char GameObject::getSide(GameObject* oGameObject)
 {
 	float overlapLR = std::min(m_iY + m_iLength, oGameObject->m_iY + m_iLength) - std::max(m_iY + m_iLength, oGameObject->m_iY + oGameObject->m_iLength);
-	std::cout << overlapLR << std::endl;
 	float overlapUD = std::min(m_iX + m_iWidth, oGameObject->m_iX + m_iWidth) - std::max(m_iX + m_iWidth, oGameObject->m_iX + oGameObject->m_iWidth);
 
 	if (overlapLR > overlapUD) {

@@ -4,19 +4,28 @@ GameManager::GameManager()
 {
     m_oWindow = new Window(640, 480, "Casse Brique");
 
-
     m_oRect = new GameObject(450, 200, 100, 100, m_oWindow, this);
     m_oCannon = new Cannon(310, 410, 50, 20, NULL, NULL, m_oWindow, this);
     m_oWallLeft = new GameObject(-10, 0, 480, 10, m_oWindow, this);
     m_oWallRight = new GameObject(640, 0, 480, 10, m_oWindow, this);
     m_oWallTop = new GameObject(0, -10, 10, 630, m_oWindow, this);
-    for (int i = 0; i < 10; i++) {
-        Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40,20,50,m_oWindow,this);
+    
+    for (int i = 0; i < sizeof(grid)/sizeof(grid[0]) ; i++) {
+        if (grid[i] == 1) {
+            Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40,20,50,m_oWindow,this,1);
+        }
+        else if (grid[i] == 2) {
+            Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40, 20, 50, m_oWindow, this, 2);
+        }
+        else if (grid[i] == 3) {
+            Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40, 20, 50, m_oWindow, this, 3);
+        }
+        
+        /*Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40,20,50,m_oWindow,this,2);*/
     }
 }
 
 GameManager* GameManager::pInstance = nullptr;
-
 
 void GameManager::Init()
 {
@@ -33,10 +42,9 @@ void GameManager::Init()
  {
      sf::Clock oClock;
 
-     
-
      bool move = false;
      float fDeltaTime = 0;
+
      while (m_oWindow->m_oWindow->isOpen())
      {
 
@@ -56,7 +64,7 @@ void GameManager::Init()
                  if (oEvent.mouseButton.button == sf::Mouse::Left)
                  {
                      m_oCannon->setDirection((localPosition.x - m_oCannon->getX()), (localPosition.y- m_oCannon->getY()));
-                     Ball* m_oCircle = new Ball(m_oCannon->getX(), m_oCannon->getY() - 50, 10, m_oWindow, this, m_oCannon->getDirectionX(),m_oCannon->getDirectionY());
+                     Ball* m_oCircle = new Ball(m_oCannon->getX(), m_oCannon->getY() - 50, 10, m_oWindow, this, m_oCannon->getDirectionX(),m_oCannon->getDirectionY(),30.f);
                  }
              }
          }

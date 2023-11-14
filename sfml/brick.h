@@ -4,10 +4,11 @@
 class Brick : public GameObject
 {
 public:
-	int life;
+	int m_iLife;
+	sf::Color color[3];
 
-	Brick(float iX, float iY, int iWidth, int iLength, Window* oWindow, GameManager* oGame);
+	Brick(float iX, float iY, int iWidth, int iLength, Window* oWindow, GameManager* oGame, int iLife);
 
-	void setColor();
+	void setColor(GameManager* oGame);
 	~Brick();
 };
