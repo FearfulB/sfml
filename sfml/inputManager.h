@@ -6,15 +6,11 @@ private:
 	static InputManager* pInstance;
 
 public:
-	static void Init() 
-	{
-		InputManager::pInstance = new InputManager();
-	}
+	static void Init();
+	
 
-	static InputManager* Get() 
-	{
-		return InputManager::pInstance;
-	}
+	static InputManager* Get();
+	
 
 
 	void checkEvent();

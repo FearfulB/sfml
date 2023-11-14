@@ -7,6 +7,17 @@ InputManager::InputManager()
 
 InputManager* InputManager::pInstance = nullptr;
 
+
+
+void InputManager::Init()
+{
+    InputManager::pInstance = new InputManager();
+}
+
+InputManager* InputManager::Get()
+{
+    return InputManager::pInstance;
+}
 void InputManager::checkEvent()
 {
 
