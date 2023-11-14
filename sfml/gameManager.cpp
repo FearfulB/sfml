@@ -1,28 +1,52 @@
 #include "gameManager.h"
 
+#include <fstream>;
+#include <iostream>;
+#include <string>;
+
 GameManager::GameManager()
 {
     m_oWindow = new Window(640, 480, "Casse Brique");
+    std::string sFileName("grid.txt");
+    std::ifstream fichier(sFileName);
+
+    if (!fichier.is_open()) {
+        std::cerr << "Could not open the file - '" << sFileName << "'" << std::endl;
+    }
+    int iNumber; 
+    std::string line;
+
+    while (getline(fichier, line)) {
+        for (int i = 0; i < line.length(); i++) {
+            const char cLetter = line[i];
+            /* le if est a changer */
+            if (cLetter == '0' || cLetter == '1' || cLetter == '2' || cLetter == '3') {
+                int j = atoi(&cLetter);
+                m_viGrid.push_back(j);
+            }
+
+        }
+    }
+    for (int i = 0; i < m_viGrid.size(); i++) {
+        if (m_viGrid[i] == 1) {
+            Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40, 20, 50, m_oWindow, this, 1);
+        }
+        else if (m_viGrid[i] == 2) {
+            Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40, 20, 50, m_oWindow, this, 2);
+        }
+        else if (m_viGrid[i] == 3) {
+            Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40, 20, 50, m_oWindow, this, 3);
+        }
+    }
+    fichier.close();
+    
 
     m_oRect = new GameObject(450, 200, 100, 100, m_oWindow, this);
     m_oCannon = new Cannon(310, 410, 50, 20, NULL, NULL, m_oWindow, this);
     m_oWallLeft = new GameObject(-10, 0, 480, 10, m_oWindow, this);
     m_oWallRight = new GameObject(640, 0, 480, 10, m_oWindow, this);
     m_oWallTop = new GameObject(0, -10, 10, 630, m_oWindow, this);
-    
-    for (int i = 0; i < sizeof(grid)/sizeof(grid[0]) ; i++) {
-        if (grid[i] == 1) {
-            Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40,20,50,m_oWindow,this,1);
-        }
-        else if (grid[i] == 2) {
-            Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40, 20, 50, m_oWindow, this, 2);
-        }
-        else if (grid[i] == 3) {
-            Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40, 20, 50, m_oWindow, this, 3);
-        }
-        
-        /*Brick* m_oBrick = new Brick(60 + (i % 8) * 60, 50 + (i / 8) * 40,20,50,m_oWindow,this,2);*/
-    }
+
 }
 
 GameManager* GameManager::pInstance = nullptr;
@@ -44,7 +68,6 @@ void GameManager::Init()
 
      bool move = false;
      float fDeltaTime = 0;
-
      while (m_oWindow->m_oWindow->isOpen())
      {
 
