@@ -35,11 +35,11 @@ public:
 	sf::Shape& getShape();
 	void setPosition(float fX, float fY, float fRatioX = 0.5f, float fRatioY = 0.5f);
 	void draw(Window& oWindow);
-	void handleCollision(GameObject* oGameObject, float fDeltaPosition, Ball* oBall);
-	void onCollisionEnter( char cSite, GameObject* oGameObject, Ball* oBall);
-	bool isColliding(GameObject* oGameObject);
+	virtual void handleCollision(GameObject* oGameObject, float fDeltaTime, GameManager* oGame);
+	virtual void onCollisionEnter(char cSide, GameManager* oGame, GameObject* oGameObject);
 	void onCollisionStay(char cSite, GameObject* oGameObject);
 	void onCollisionExit(char cSite, GameObject* oGameObject);
+	bool isColliding(GameObject* oGameObject);
 	char getSide(GameObject* oGameObject);
 
 	~GameObject();

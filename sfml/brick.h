@@ -9,6 +9,7 @@ public:
 
 	Brick(float iX, float iY, int iWidth, int iLength, Window* oWindow, GameManager* oGame, int iLife);
 
-	void setColor(GameManager* oGame);
+	void takeDamage(GameManager* oGame, GameObject* oGameObject);
+	void onCollisionEnter(char cSide, GameManager* oGame, GameObject* oGameObject) override;
 	~Brick();
 };

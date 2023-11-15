@@ -22,7 +22,7 @@ void Ball::bounce(char cSite) {
 	if (cSite == 'l' || cSite == 'r') {
 		m_fDirection[0] = -m_fDirection[0];
 	}
-	else if(cSite == 'u' || cSite == 'd') {
+	else if (cSite == 'u' || cSite == 'd') {
 		m_fDirection[1] = -m_fDirection[1];
 	}
 	else
@@ -31,4 +31,33 @@ void Ball::bounce(char cSite) {
 		m_fDirection[1] = -m_fDirection[1];
 	}
 
+}
+void Ball::handleCollision(GameObject* oGameObject, float fDeltaTime, GameManager* oGame) {
+	bool isCollide = isColliding(oGameObject);
+	bool bIsAlreadyInCollision = false;
+	char cSide = getSide(oGameObject);
+	if (std::count(m_voObjectCollide.begin(), m_voObjectCollide.end(), oGameObject)) {
+		bIsAlreadyInCollision = true;
+	}
+	if (isCollide) {
+		if (bIsAlreadyInCollision == false)
+		{
+			onCollisionEnter(cSide, oGame, oGameObject);
+		}
+		else {
+			onCollisionStay(cSide, oGameObject);
+		}
+	}
+	else {
+		if (bIsAlreadyInCollision) {
+			onCollisionExit(cSide, oGameObject);
+		}
+	}
+}
+
+void Ball::onCollisionEnter(char cSide, GameManager* oGame, GameObject* oGameObject) {
+	m_voObjectCollide.push_back(oGameObject);
+	oGameObject->onCollisionEnter(cSide, oGame,oGameObject);
+	/*on a besoin d appeler takeDamage*/
+	bounce(cSide);
 }

@@ -10,7 +10,7 @@
 #include <iostream>
 
 
-GameObject::GameObject(float iX, float iY, int iWidth, int iLength , Window* oWindow, GameManager* oGame){
+GameObject::GameObject(float iX, float iY, int iWidth, int iLength, Window* oWindow, GameManager* oGame) {
 	m_iX = iX;
 	m_iY = iY;
 	m_iWidth = iWidth;
@@ -28,9 +28,9 @@ GameObject::GameObject(float iX, float iY, int iRadius, Window* oWindow, GameMan
 	m_iWidth = 2 * m_iRadius;
 
 	m_Shape = new sf::CircleShape(m_iRadius);
-	this->setPosition(m_iX, m_iY);
+	/*this->setPosition(m_iX, m_iY);*/
 	(*oWindow).m_voGameWindowObjects.push_back(this);
-	
+
 }
 
 sf::Shape& GameObject::getShape() {
@@ -41,25 +41,25 @@ float GameObject::getX() {
 	return m_iX;
 }
 
-float GameObject::getY(){
+float GameObject::getY() {
 	return m_iY;
 }
 
-int GameObject::getWidth(){
+int GameObject::getWidth() {
 	return m_iWidth;
 }
 
-int GameObject::getLength(){
+int GameObject::getLength() {
 	return m_iLength;
 }
 
-int GameObject::getRadius(){
+int GameObject::getRadius() {
 	return m_iRadius;
 }
 
 
 void GameObject::setPosition(float fX, float fY, float fRatioX, float fRatioY) {
-	m_Shape->setOrigin(fRatioX, fRatioY);
+	/*m_Shape->setOrigin(fRatioX, fRatioY);*/
 	m_Shape->setPosition(fX, fY);
 }
 
@@ -69,37 +69,16 @@ void GameObject::draw(Window& oWindow) {
 	oWindow.m_oWindow->draw(getShape());
 }
 
-void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime, Ball* oBall) {
-	
-	bool isCollide = isColliding(oGameObject);
-	bool bIsAlreadyInCollision = false;
-	char cSite = oBall->getSide(oGameObject);
-	if (std::count(m_voObjectCollide.begin(), m_voObjectCollide.end(), oGameObject)) {
-		bIsAlreadyInCollision = true;
-	}
-	if (isCollide) {
-		if (bIsAlreadyInCollision == false)
-		{
-			onCollisionEnter(cSite, oGameObject, oBall);
-		} 
-		else{
-			onCollisionStay(cSite, oGameObject);
-		}
-	}
-	else {
-		if (bIsAlreadyInCollision) {
-			onCollisionExit(cSite, oGameObject);
-		}
-	}
+void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime, GameManager* oGame) {
+
 }
-void GameObject::onCollisionEnter(char cSite, GameObject* oGameObject, Ball* oBall) {
-	m_voObjectCollide.push_back(oGameObject);
-	oBall->bounce(cSite);
+void GameObject::onCollisionEnter(char cSide, GameManager* oGame, GameObject* oGameObject) {
+
 }
-void GameObject::onCollisionStay(char cSite, GameObject* oGameObject) {
-	
+void GameObject::onCollisionStay(char cSide, GameObject* oGameObject) {
+
 }
-void GameObject::onCollisionExit(char cSite, GameObject* oGameObject) {
+void GameObject::onCollisionExit(char cSide, GameObject* oGameObject) {
 	int iObjectIndex = 0;
 	for (int i = 0; i < m_voObjectCollide.size(); i++) {
 		if (m_voObjectCollide[i] == oGameObject) {
@@ -126,7 +105,9 @@ bool GameObject::isColliding(GameObject* oGameObject) {
 	}
 	else {
 		(math::isPointBetween(oGameObject->m_iX, m_iX, m_iX + m_iLength)
-			|| math::isPointBetween(oGameObject->m_iX + oGameObject->m_iLength, m_iX, m_iX + m_iLength)) ? iCollidValue += 1 : false;
+			|| math::isPointBetween(oGameObject->m_iX + oGameObject->m_iLength, m_iX, m_iX + m_iLength)
+			|| math::isPointBetween(m_iX, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength)
+			||math::isPointBetween(m_iX + m_iLength, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength)) ? iCollidValue += 1 : false;
 	}
 	if (iCollidValue == 2) {
 		iCollidValue = 0;
@@ -139,20 +120,23 @@ bool GameObject::isColliding(GameObject* oGameObject) {
 }
 char GameObject::getSide(GameObject* oGameObject)
 {
-	float overlapLR = std::min(m_iY + m_iLength, oGameObject->m_iY + m_iLength) - std::max(m_iY + m_iLength, oGameObject->m_iY + oGameObject->m_iLength);
-	float overlapUD = std::min(m_iX + m_iWidth, oGameObject->m_iX + m_iWidth) - std::max(m_iX + m_iWidth, oGameObject->m_iX + oGameObject->m_iWidth);
+	/*bool collide = ((math::isPointBetween(m_iX, oGameObject->m_iX, oGameObject->m_iLength) && math::isPointBetween(m_iY, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iWidth)) && (math::isPointBetween(m_iX + m_iLength, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength) && (math::isPointBetween(m_iY, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iWidth))));*/
+	float overlapLR = std::min(m_iX + m_iLength, oGameObject->m_iX + m_iLength) - std::max(m_iX, oGameObject->m_iX);
+	float overlapUD = std::min(m_iY + m_iWidth, oGameObject->m_iY + m_iWidth) - std::max(m_iY, oGameObject->m_iY);
+	
 
 	if (overlapLR > overlapUD) {
-		if (m_iX <= oGameObject->m_iX + oGameObject->m_iWidth and m_iX >= oGameObject->m_iX) {
-			return 'r';
+		if (m_iX >= oGameObject->m_iX  and m_iX <= oGameObject->m_iX) {
+			return 'l';
 		}
 		else {
-			return 'l';
+
+			return 'r';
 		}
 	}
 	else if (overlapLR < overlapUD) {
 
-		if (m_iY + m_iLength >= oGameObject->m_iY and m_iY <= oGameObject->m_iY) {
+		if (m_iY + m_iWidth >= oGameObject->m_iY and m_iY <= oGameObject->m_iY) {
 			return 'u';
 		}
 		else {

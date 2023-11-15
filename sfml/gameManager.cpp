@@ -40,7 +40,6 @@ GameManager::GameManager()
     fichier.close();
     
 
-    m_oRect = new GameObject(450, 200, 100, 100, m_oWindow, this);
     m_oCannon = new Cannon(310, 410, 50, 20, NULL, NULL, m_oWindow, this);
     m_oWallLeft = new GameObject(-10, 0, 480, 10, m_oWindow, this);
     m_oWallRight = new GameObject(640, 0, 480, 10, m_oWindow, this);
@@ -65,7 +64,8 @@ void GameManager::Init()
  {
      sf::Clock oClock;
 
-     bool move = false;
+     bool bCanShoot = true;
+
      float fDeltaTime = 0;
      while (m_oWindow->m_oWindow->isOpen())
      {
@@ -83,21 +83,35 @@ void GameManager::Init()
                  m_oWindow->m_oWindow->close();
              if (oEvent.type == sf::Event::MouseButtonPressed)
              {
-                 if (oEvent.mouseButton.button == sf::Mouse::Left)
+                 if (oEvent.mouseButton.button == sf::Mouse::Left && bCanShoot)
                  {
                      m_oCannon->setDirection((localPosition.x - m_oCannon->getX()), (localPosition.y- m_oCannon->getY()));
-                     Ball* m_oCircle = new Ball(m_oCannon->getX(), m_oCannon->getY() - 50, 10, m_oWindow, this, m_oCannon->getDirectionX(),m_oCannon->getDirectionY(),30.f);
+                     Ball* m_oCircle = new Ball(m_oCannon->getX(), m_oCannon->getY() - 50, 10, m_oWindow, this, m_oCannon->getDirectionX(),m_oCannon->getDirectionY(),10.f);
+                     bCanShoot = false;
                  }
              }
          }
-        if (!m_voCircleCollide.empty()) {
-            for (int i = 0; i < m_voRectCollide.size(); i++) { 
-                for (int j = 0; j < m_voCircleCollide.size(); j++) {
-                    m_voCircleCollide[j]->handleCollision(m_voRectCollide[i], fDeltaTime, m_voCircleCollide[j]);
-                    m_voCircleCollide[j]->move(fDeltaTime);
-                }
-            }
-        }
+         if (!m_voCircleCollide.empty()) {
+             for (int i = 0; i < m_voRectCollide.size(); i++) {
+                 for (int j = 0; j < m_voCircleCollide.size(); j++) {
+                     if (m_voRectCollide[i] != m_oCannon) {
+                         m_voCircleCollide[j]->handleCollision(m_voRectCollide[i], fDeltaTime, this);
+                         m_voCircleCollide[j]->move(fDeltaTime);
+                     }
+                 }
+             }
+             if (m_voCircleCollide[0]->getY() > m_oWindow->getHeight()) {
+                 for (int i = 0; i < m_oWindow->m_voGameWindowObjects.size(); i++) {
+                     if (m_voCircleCollide[0] == m_oWindow->m_voGameWindowObjects[i]) {
+                         m_oWindow->m_voGameWindowObjects.erase(m_oWindow->m_voGameWindowObjects.begin() + i);
+                         bCanShoot = true;
+                     }
+                 }
+                 m_voCircleCollide.pop_back();
+             }
+         }
+
+
 
          //DRAW
          m_oWindow->m_oWindow->clear();
