@@ -112,8 +112,8 @@ bool GameObject::isColliding(GameObject* oGameObject) {
 }
 char GameObject::getSide(GameObject* oGameObject)
 {
-	float overlapLR = std::min(m_iY , oGameObject->m_iY) - std::max(m_iY + m_iWidth,  oGameObject->m_iY + m_iWidth);
-	float overlapUD = std::min(m_iX , oGameObject->m_iX) - std::max(m_iX + m_iLength, oGameObject->m_iX + m_iLength);
+	float overlapLR = std::min(m_iY + m_iWidth, oGameObject->m_iY + m_iWidth) - std::max(m_iY,  oGameObject->m_iY);
+	float overlapUD = std::min(m_iX + m_iLength, oGameObject->m_iX + m_iLength) - std::max(m_iX, oGameObject->m_iX);
 	
 
 	if (overlapLR > overlapUD) {
