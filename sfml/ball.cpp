@@ -58,6 +58,5 @@ void Ball::handleCollision(GameObject* oGameObject, float fDeltaTime, GameManage
 void Ball::onCollisionEnter(char cSide, GameManager* oGame, GameObject* oGameObject) {
 	m_voObjectCollide.push_back(oGameObject);
 	oGameObject->onCollisionEnter(cSide, oGame,oGameObject);
-	/*on a besoin d appeler takeDamage*/
 	bounce(cSide);
 }

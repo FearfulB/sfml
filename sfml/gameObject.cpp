@@ -90,43 +90,34 @@ void GameObject::onCollisionExit(char cSide, GameObject* oGameObject) {
 }
 
 bool GameObject::isColliding(GameObject* oGameObject) {
-	int iCollidValue = 0;
-	if (m_iWidth < oGameObject->m_iWidth) {
-		(math::isPointBetween(m_iY, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iWidth)
-			|| math::isPointBetween(m_iY + m_iWidth, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iWidth)) ? iCollidValue += 1 : false;
+	bool bCollideX;
+	bool bCollideY;
+	if (getWidth() <= oGameObject->getWidth()) {
+		bCollideY = math::isPointBetween(m_iY, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iWidth)
+			|| math::isPointBetween(m_iY + m_iWidth, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iWidth);
 	}
 	else {
-		(math::isPointBetween(oGameObject->m_iY, m_iY, m_iY + m_iWidth)
-			|| math::isPointBetween(oGameObject->m_iY + oGameObject->m_iWidth, m_iY, m_iY + m_iWidth)) ? iCollidValue += 1 : false;
+		bCollideY = math::isPointBetween(oGameObject->m_iY, m_iY, m_iY + m_iWidth)
+			|| math::isPointBetween(oGameObject->m_iY + oGameObject->m_iWidth, m_iY, m_iY + m_iWidth);
 	}
-	if (m_iLength < oGameObject->m_iLength) {
-		(math::isPointBetween(m_iX, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength)
-			|| math::isPointBetween(m_iX + m_iLength, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength)) ? iCollidValue += 1 : false;
-	}
-	else {
-		(math::isPointBetween(oGameObject->m_iX, m_iX, m_iX + m_iLength)
-			|| math::isPointBetween(oGameObject->m_iX + oGameObject->m_iLength, m_iX, m_iX + m_iLength)
-			|| math::isPointBetween(m_iX, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength)
-			||math::isPointBetween(m_iX + m_iLength, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength)) ? iCollidValue += 1 : false;
-	}
-	if (iCollidValue == 2) {
-		iCollidValue = 0;
-		return true;
+	if (m_iLength <= oGameObject->m_iLength) {
+		bCollideX = math::isPointBetween(m_iX, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength)
+			|| math::isPointBetween(m_iX + m_iLength, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength);
 	}
 	else {
-		iCollidValue = 0;
-		return false;
+		bCollideX = math::isPointBetween(oGameObject->m_iX, m_iX, m_iX + m_iLength)
+			|| math::isPointBetween(oGameObject->m_iX + oGameObject->m_iLength, m_iX, m_iX + m_iLength);
 	}
+	return bCollideX && bCollideY;
 }
 char GameObject::getSide(GameObject* oGameObject)
 {
-	/*bool collide = ((math::isPointBetween(m_iX, oGameObject->m_iX, oGameObject->m_iLength) && math::isPointBetween(m_iY, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iWidth)) && (math::isPointBetween(m_iX + m_iLength, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength) && (math::isPointBetween(m_iY, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iWidth))));*/
-	float overlapLR = std::min(m_iX + m_iLength, oGameObject->m_iX + m_iLength) - std::max(m_iX, oGameObject->m_iX);
-	float overlapUD = std::min(m_iY + m_iWidth, oGameObject->m_iY + m_iWidth) - std::max(m_iY, oGameObject->m_iY);
+	float overlapLR = std::min(m_iY , oGameObject->m_iY) - std::max(m_iY + m_iWidth,  oGameObject->m_iY + m_iWidth);
+	float overlapUD = std::min(m_iX , oGameObject->m_iX) - std::max(m_iX + m_iLength, oGameObject->m_iX + m_iLength);
 	
 
 	if (overlapLR > overlapUD) {
-		if (m_iX >= oGameObject->m_iX  and m_iX <= oGameObject->m_iX) {
+		if (m_iX + m_iLength >= oGameObject->m_iX  and m_iX <= oGameObject->m_iX) {
 			return 'l';
 		}
 		else {
@@ -142,9 +133,6 @@ char GameObject::getSide(GameObject* oGameObject)
 		else {
 			return 'd';
 		}
-	}
-	else {
-		return 'p';
 	}
 }
 
