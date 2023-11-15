@@ -16,6 +16,7 @@ public:
 
 	static void Init();
 	static GameManager* Get();
+	bool checkWin();
 	
 
 	void mainLoop();

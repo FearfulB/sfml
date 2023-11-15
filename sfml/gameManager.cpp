@@ -6,6 +6,8 @@
 
 GameManager::GameManager()
 {
+
+    
     m_oWindow = new Window(640, 480, "Casse Brique");
     std::string sFileName("grid.txt");
     std::ifstream fichier(sFileName);
@@ -60,6 +62,14 @@ void GameManager::Init()
  }
 
 
+ bool GameManager::checkWin() {
+     if (m_voBrickCollide.empty()) {
+         return true;
+     }
+ }
+
+ 
+
  void GameManager::mainLoop() 
  {
      sf::Clock oClock;
@@ -110,11 +120,13 @@ void GameManager::Init()
                  m_voCircleCollide.pop_back();
              }
          }
-
-
-
          //DRAW
          m_oWindow->m_oWindow->clear();
+         if (checkWin())
+         {
+             m_oWindow->displayWin();
+             
+         }
          m_oWindow->display();
          fDeltaTime = oClock.restart().asSeconds();
          

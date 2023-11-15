@@ -18,5 +18,38 @@ void Window::display() {
 	for (int i = 0; i < m_voGameWindowObjects.size(); i++) {
 		m_voGameWindowObjects[i]->draw(*this);
 	}
+    
 	m_oWindow->display();
+}
+
+void Window::displayWin() {
+    sf::Font font; 
+    sf::Text text;
+    font.loadFromFile("starborn/Starborn.ttf");
+
+    // select the font
+    text.setFont(font); // font is a sf::Font
+
+    // set the string to display
+    text.setString("You Win");
+
+    // set the character size
+    text.setCharacterSize(25); // in pixels, not points!
+
+    text.setPosition(200, 300);
+
+    // set the color
+    text.setFillColor(sf::Color::Red);
+
+    // set the text style
+    text.setStyle(sf::Text::Bold );
+
+    m_oWindow->draw(text);
+
+    
+
+
+
+    
+
 }

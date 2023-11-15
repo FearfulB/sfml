@@ -20,4 +20,5 @@ public:
 	int getWidth();
 	int getHeight();
 	void display();
+	void displayWin();
 };
