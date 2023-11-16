@@ -31,7 +31,7 @@ public:
 	
 
 	Cannon* m_oCannon;
-	GameObject* m_oRect;
+	
 
 	/*GameObject* m_oCircle;*/
 	GameObject* m_oWallLeft;

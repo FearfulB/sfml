@@ -1,5 +1,4 @@
 #include "gameManager.h"
-
 #include <fstream>;
 #include <iostream>;
 #include <string>;
@@ -8,7 +7,7 @@ GameManager::GameManager()
 {
 
     AssetManager::Init();
-    m_oWindow = new Window(640, 480, "Casse Brique");
+    m_oWindow = new Window(640, 480, "Casse Brique F1");
     
     std::string sFileName("grid.txt");
     std::ifstream fichier(sFileName);
@@ -43,7 +42,7 @@ GameManager::GameManager()
     fichier.close();
     
 
-    m_oCannon = new Cannon(310, 410, 50, 20, NULL, NULL, m_oWindow, this, "canon.png");
+    m_oCannon = new Cannon(310, 410, 50, 20, NULL, NULL, m_oWindow, this, "img/canon.png");
     m_oWallLeft = new GameObject(-10, 0, 480, 10, m_oWindow, this);
     m_oWallRight = new GameObject(640, 0, 480, 10, m_oWindow, this);
     m_oWallTop = new GameObject(0, -10, 10, 630, m_oWindow, this);
@@ -66,12 +65,8 @@ void GameManager::Init()
  bool GameManager::checkWin() {
      if (m_voBrickCollide.empty()) {
          return true;
-     }
-     
-     
+     }    
  }
-
- 
 
  void GameManager::mainLoop() 
  {
@@ -130,18 +125,15 @@ void GameManager::Init()
          fDeltaTime = oClock.restart().asSeconds();
          if (checkWin())
          {
-             
-             
-             m_oWindow->display();
+             m_oWindow->m_oWindow->clear();
              m_oWindow->displayWin();
-             
              while (m_oWindow->m_oWindow->isOpen()) {
                  while (m_oWindow->m_oWindow->pollEvent(oEvent))
                  {
                      if (oEvent.type == sf::Event::Closed) {
                          m_oWindow->m_oWindow->close();
                      }
-                 }  
+                 }    
              }
          } 
      }  
