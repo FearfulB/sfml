@@ -2,7 +2,7 @@
 #include "gameManager.h"
 
 
-Brick::Brick(float iX, float iY, int iWidth, int iLength, Window* oWindow, GameManager* oGame, int iLife) : GameObject(iX, iY, iWidth, iLength, oWindow, oGame) {
+Brick::Brick(float iX, float iY, int iHeight, int iWidth, Window* oWindow, GameManager* oGame, int iLife) : GameObject(iX, iY, iHeight, iWidth, oWindow, oGame) {
 	
 	m_iLife = iLife;
 	color[0] = { sf::Color::Red };

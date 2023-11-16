@@ -41,9 +41,9 @@ GameManager::GameManager()
     
 
     m_oCannon = new Cannon(310, 410, 50, 20, NULL, NULL, m_oWindow, this);
-    m_oWallLeft = new GameObject(-10, 0, 480, 10, m_oWindow, this);
-    m_oWallRight = new GameObject(640, 0, 480, 10, m_oWindow, this);
-    m_oWallTop = new GameObject(0, -10, 10, 630, m_oWindow, this);
+    m_oWallLeft = new GameObject(-20, 0, 480, 20, m_oWindow, this);
+    m_oWallRight = new GameObject(640, 0, 480, 20, m_oWindow, this);
+    m_oWallTop = new GameObject(0, -20, 20, 630, m_oWindow, this);
 
 }
 

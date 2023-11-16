@@ -10,12 +10,12 @@
 #include <iostream>
 
 
-GameObject::GameObject(float iX, float iY, int iWidth, int iLength, Window* oWindow, GameManager* oGame) {
+GameObject::GameObject(float iX, float iY, int iHeight, int iWidth, Window* oWindow, GameManager* oGame) {
 	m_iX = iX;
 	m_iY = iY;
 	m_iWidth = iWidth;
-	m_iLength = iLength;
-	m_Shape = new sf::RectangleShape(sf::Vector2f(m_iLength, m_iWidth));
+	m_iHeight = iHeight;
+	m_Shape = new sf::RectangleShape(sf::Vector2f(m_iWidth, m_iHeight));
 	setPosition(m_iX, m_iY);
 	(*oWindow).m_voGameWindowObjects.push_back(this);
 	(*oGame).m_voRectCollide.push_back(this);
@@ -24,7 +24,7 @@ GameObject::GameObject(float iX, float iY, int iRadius, Window* oWindow, GameMan
 	m_iX = iX;
 	m_iY = iY;
 	m_iRadius = iRadius;
-	m_iLength = 2 * m_iRadius;
+	m_iHeight = 2 * m_iRadius;
 	m_iWidth = 2 * m_iRadius;
 
 	m_Shape = new sf::CircleShape(m_iRadius);
@@ -49,8 +49,8 @@ int GameObject::getWidth() {
 	return m_iWidth;
 }
 
-int GameObject::getLength() {
-	return m_iLength;
+int GameObject::getHeight() {
+	return m_iHeight;
 }
 
 int GameObject::getRadius() {
@@ -70,7 +70,33 @@ void GameObject::draw(Window& oWindow) {
 }
 
 void GameObject::handleCollision(GameObject* oGameObject, float fDeltaTime, GameManager* oGame) {
+	bool isCollide = isColliding(oGameObject);
 
+	auto bIsAlreadyInCollision = std::find(m_voObjectCollide.begin(), m_voObjectCollide.end(), oGameObject);
+
+
+	if (isCollide) {
+
+		char cSide = getSide(oGameObject);
+		if (bIsAlreadyInCollision == m_voObjectCollide.end())
+		{
+			m_voObjectCollide.push_back(oGameObject);
+
+			onCollisionEnter(cSide, oGame, oGameObject);
+			oGameObject->onCollisionEnter(cSide, oGame, oGameObject);
+		}
+		else {
+
+			onCollisionStay(cSide, oGameObject);
+		}
+	}
+	else {
+		if (bIsAlreadyInCollision != m_voObjectCollide.end()) {
+
+			onCollisionExit(oGameObject);
+			m_voObjectCollide.erase(bIsAlreadyInCollision);
+		}
+	}
 }
 void GameObject::onCollisionEnter(char cSide, GameManager* oGame, GameObject* oGameObject) {
 
@@ -87,33 +113,33 @@ bool GameObject::isColliding(GameObject* oGameObject) {
 	bool bCollideX;
 	bool bCollideY;
 	if (getWidth() <= oGameObject->getWidth()) {
-		bCollideY = math::isPointBetween(m_iY, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iWidth)
-			|| math::isPointBetween(m_iY + m_iWidth, oGameObject->m_iY, oGameObject->m_iY + oGameObject->m_iWidth);
+		bCollideY = math::isPointBetween(getY(), oGameObject->getY(), oGameObject->getY() + oGameObject->getHeight())
+			|| math::isPointBetween(getY() + getHeight(), oGameObject->getY(), oGameObject->getY() + oGameObject->getHeight());
 	}
 	else {
-		bCollideY = math::isPointBetween(oGameObject->m_iY, m_iY, m_iY + m_iWidth)
-			|| math::isPointBetween(oGameObject->m_iY + oGameObject->m_iWidth, m_iY, m_iY + m_iWidth);
+		bCollideY = math::isPointBetween(oGameObject->getY(), getY(), getY() + getHeight())
+			|| math::isPointBetween(oGameObject->getY() + oGameObject->getHeight(), getY(), getY() + getHeight());
 	}
-	if (m_iLength <= oGameObject->m_iLength) {
-		bCollideX = math::isPointBetween(m_iX, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength)
-			|| math::isPointBetween(m_iX + m_iLength, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength);
+	if (getWidth() <= oGameObject->getWidth()) {
+		bCollideX = math::isPointBetween(getX(), oGameObject->getX(), oGameObject->getX() + oGameObject->getWidth())
+			|| math::isPointBetween(getX() + getWidth(), oGameObject->getX(), oGameObject->getX() + oGameObject->getWidth());
 	}
 	else {
-		bCollideX = math::isPointBetween(oGameObject->m_iX, m_iX, m_iX + m_iLength)
-			|| math::isPointBetween(oGameObject->m_iX + oGameObject->m_iLength, m_iX, m_iX + m_iLength);
+		bCollideX = math::isPointBetween(oGameObject->getX(), getX(), getX() + getWidth())
+			|| math::isPointBetween(oGameObject->getX() + oGameObject->getWidth(), getX(), getX() + getWidth());
 	}
 	return bCollideX && bCollideY;
 }
 char GameObject::getSide(GameObject* oGameObject)
 {
 	int iGo1Xmin = oGameObject->getX();
-	int iGo1Xmax = oGameObject->getX() + oGameObject->getLength();
+	int iGo1Xmax = oGameObject->getX() + oGameObject->getWidth();
 	int iGo1Ymin = oGameObject->getY();
-	int iGo1Ymax = oGameObject->getY() + oGameObject->getWidth();
+	int iGo1Ymax = oGameObject->getY() + oGameObject->getHeight();
 	int iXmin = getX();
-	int iXmax = getX() + getLength();
+	int iXmax = getX() + getWidth();
 	int iYmin = getY();
-	int iYmax = getY() + getWidth();
+	int iYmax = getY() + getHeight();
 
 	if ((iYmin - iGo1Ymin > iYmin - iGo1Ymax) && (iXmax - iGo1Xmin > iGo1Ymax - iYmin ) && (math::isPointBetween(iXmin,iGo1Xmin,iGo1Xmax))&& (math::isPointBetween(iYmin,iGo1Ymin,iGo1Ymax))) {
 		return 'd';
@@ -121,11 +147,14 @@ char GameObject::getSide(GameObject* oGameObject)
 	else if ((iYmax - iGo1Ymin > iYmax - iGo1Ymax) && (iGo1Xmax - iXmin > iGo1Ymax - iYmin ) &&  (math::isPointBetween(iXmax, iGo1Xmin, iGo1Xmax)) && (math::isPointBetween(iYmax, iGo1Ymin, iGo1Ymax))) {
 		return 'u';
 	}
-	else if ((iGo1Xmax - iXmin > iXmin - iGo1Xmin ) && (iGo1Ymax - iYmin > iGo1Xmax - iXmin) && (math::isPointBetween(iXmin, iGo1Xmin, iGo1Xmax)) && (math::isPointBetween(iYmin, iGo1Ymin, iGo1Ymax))) {
+	else if ((iGo1Xmax - iXmin < iXmin - iGo1Xmin ) && (iGo1Ymax - iYmin > iGo1Xmax - iXmin) && (math::isPointBetween(iXmin, iGo1Xmin, iGo1Xmax)) && (math::isPointBetween(iYmin, iGo1Ymin, iGo1Ymax))) {
 		return 'r';
 	}
-	else if ((iXmax - iGo1Xmin > iGo1Xmin - iXmin) && (iGo1Ymax - iYmax > iXmax - iGo1Xmin) && (math::isPointBetween(iXmax, iGo1Xmin, iGo1Xmax)) && (math::isPointBetween(iYmax, iGo1Ymin, iGo1Ymax))) {
+	else if ((iXmax - iGo1Xmin < iGo1Xmin - iXmin) && (iGo1Ymax - iYmax > iXmax - iGo1Xmin) && (math::isPointBetween(iXmax, iGo1Xmin, iGo1Xmax)) && (math::isPointBetween(iYmax, iGo1Ymin, iGo1Ymax))) {
 		return 'l';
+	}
+	else {
+		return 'p';
 	}
 }
 

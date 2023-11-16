@@ -15,7 +15,7 @@ public:
 	float m_iX;
 	float m_iY;
 	int m_iWidth;
-	int m_iLength;
+	int m_iHeight;
 	int m_iRadius;
 	float m_fDirectionX;
 	float m_fDirectionY;
@@ -29,13 +29,13 @@ public:
 	float getX();
 	float getY();
 	int getWidth();
-	int getLength();
+	int getHeight();
 	int getRadius();
 
 	sf::Shape& getShape();
 	void setPosition(float fX, float fY, float fRatioX = 0.5f, float fRatioY = 0.5f);
 	void draw(Window& oWindow);
-	virtual void handleCollision(GameObject* oGameObject, float fDeltaTime, GameManager* oGame);
+	void handleCollision(GameObject* oGameObject, float fDeltaTime, GameManager* oGame);
 	virtual void onCollisionEnter(char cSide, GameManager* oGame, GameObject* oGameObject);
 	void onCollisionStay(char cSite, GameObject* oGameObject);
 	virtual void onCollisionExit( GameObject* oGameObject);

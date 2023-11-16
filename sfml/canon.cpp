@@ -2,7 +2,7 @@
 #include "gameManager.h"
 #include <iostream>
 
-Cannon::Cannon(float iX, float iY, int iWidth, int iLength, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame) : GameObject(iX, iY, iWidth, iLength, oWindow, oGame)
+Cannon::Cannon(float iX, float iY, int iHeight, int iWidth, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame) : GameObject(iX, iY, iHeight, iWidth, oWindow, oGame)
 {
 	m_fDirectionX = fDirectionX;
 	m_fDirectionY = fDirectionY;

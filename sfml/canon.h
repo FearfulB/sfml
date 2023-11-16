@@ -7,7 +7,7 @@ public:
 	float m_fDirectionX;
 	float m_fDirectionY;
 
-	Cannon( float iX, float iY, int iWidth, int iLength, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame);
+	Cannon( float iX, float iY, int iHeight, int iWidth, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame);
 
 	float getDirectionX();
 	float getDirectionY();

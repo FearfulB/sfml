@@ -27,43 +27,10 @@ void Ball::bounce(char cSite) {
 	else if (cSite == 'u' || cSite == 'd') {
 		m_fDirection[1] = -m_fDirection[1];
 	}
-	//else
-	//{
-	//	m_fDirection[0] = -m_fDirection[0];
-	//	m_fDirection[1] = -m_fDirection[1];
-	//}
-
-}
-void Ball::handleCollision(GameObject* oGameObject, float fDeltaTime, GameManager* oGame) {
-	bool isCollide = isColliding(oGameObject);
-
-	auto bIsAlreadyInCollision = std::find(m_voObjectCollide.begin(), m_voObjectCollide.end(), oGameObject);
-
-
-	//for (int i = 0; i < m_voObjectCollide.size(); i++) {
-	//	if (m_voObjectCollide[i] == oGameObject) {
-	//		bIsAlreadyInCollision = true;
-	//	}
-	//}
-	if (isCollide) {
-
-		char cSide = getSide(oGameObject);
-		if (bIsAlreadyInCollision == m_voObjectCollide.end())
-		{
-			std::cout << cSide;
-			m_voObjectCollide.push_back(oGameObject);
-			onCollisionEnter(cSide, oGame, oGameObject);
-			oGameObject->onCollisionEnter(cSide, oGame, oGameObject);
-		}
-		else {
-			onCollisionStay(cSide, oGameObject);
-		}
-	}
-	else {
-		if (bIsAlreadyInCollision != m_voObjectCollide.end()) {
-			onCollisionExit( oGameObject);
-			m_voObjectCollide.erase(bIsAlreadyInCollision);
-		}
+	else
+	{
+		m_fDirection[0] = -m_fDirection[0];
+		m_fDirection[1] = -m_fDirection[1];
 	}
 }
 
