@@ -131,8 +131,9 @@ void GameManager::Init()
          if (checkWin())
          {
              
-             m_oWindow->displayWin();
+             
              m_oWindow->display();
+             m_oWindow->displayWin();
              
              while (m_oWindow->m_oWindow->isOpen()) {
                  while (m_oWindow->m_oWindow->pollEvent(oEvent))
