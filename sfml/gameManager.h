@@ -4,6 +4,7 @@
 #include "canon.h"
 #include "ball.h"
 #include "brick.h"
+#include "assetManager.h"
 
 
 class GameManager
@@ -13,10 +14,10 @@ private:
 	static GameManager* pInstance;
 
 public:
-
+	
 	static void Init();
 	static GameManager* Get();
-	
+	bool checkWin();
 
 	void mainLoop();
 	
@@ -27,7 +28,7 @@ public:
 	Window* m_oWindow;
 
 	Cannon* m_oCannon;
-	GameObject* m_oRect;
+	
 
 	/*GameObject* m_oCircle;*/
 	GameObject* m_oWallLeft;

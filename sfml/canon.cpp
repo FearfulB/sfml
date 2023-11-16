@@ -2,11 +2,14 @@
 #include "gameManager.h"
 #include <iostream>
 
-Cannon::Cannon(float iX, float iY, int iHeight, int iWidth, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame) : GameObject(iX, iY, iHeight, iWidth, oWindow, oGame)
+Cannon::Cannon(float iX, float iY, int iHeight, int iWidth, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame, const char* cPath) : GameObject(iX, iY, iHeight, iWidth, oWindow, oGame)
 {
 	m_fDirectionX = fDirectionX;
 	m_fDirectionY = fDirectionY;
+	m_sprite = new sf::Sprite();
 
+	m_sprite = AssetManager::Get()->sprite(cPath, 1, 1, iX, iY);
+	(*oWindow).m_voSprite.push_back(m_sprite);
 }
 float Cannon::getDirectionX() {
 	return m_fDirectionX;
@@ -19,6 +22,7 @@ void Cannon::setOrientation(float vMousePositionX, float vMousePositionY, float 
 	m_Shape->setOrigin(fRatioX, fRatioY);
 	int mouseAngle = -atan2(vMousePositionX - m_iX, vMousePositionY - m_iY) * 180 / 3.1459;
 	m_Shape->setRotation(mouseAngle);
+	m_sprite->setRotation(mouseAngle);
 }
 
 
