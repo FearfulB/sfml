@@ -38,7 +38,7 @@ public:
 	virtual void handleCollision(GameObject* oGameObject, float fDeltaTime, GameManager* oGame);
 	virtual void onCollisionEnter(char cSide, GameManager* oGame, GameObject* oGameObject);
 	void onCollisionStay(char cSite, GameObject* oGameObject);
-	void onCollisionExit(char cSite, GameObject* oGameObject);
+	void onCollisionExit( GameObject* oGameObject);
 	bool isColliding(GameObject* oGameObject);
 	char getSide(GameObject* oGameObject);
 

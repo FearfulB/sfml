@@ -1,6 +1,8 @@
 #include "ball.h"
 #include "gameManager.h"
 
+#include <iostream>
+
 Ball::Ball(float iX, float iY, int iRadius, Window* oWindow, GameManager* oGame, float fDirectionX, float fDirectionY, float fSpeed) : GameObject(iX, iY, iRadius, oWindow, oGame) {
 	m_fDirection.push_back(fDirectionX);
 	m_fDirection.push_back(fDirectionY);
@@ -25,11 +27,11 @@ void Ball::bounce(char cSite) {
 	else if (cSite == 'u' || cSite == 'd') {
 		m_fDirection[1] = -m_fDirection[1];
 	}
-	else
-	{
-		m_fDirection[0] = -m_fDirection[0];
-		m_fDirection[1] = -m_fDirection[1];
-	}
+	//else
+	//{
+	//	m_fDirection[0] = -m_fDirection[0];
+	//	m_fDirection[1] = -m_fDirection[1];
+	//}
 
 }
 void Ball::handleCollision(GameObject* oGameObject, float fDeltaTime, GameManager* oGame) {
@@ -40,8 +42,10 @@ void Ball::handleCollision(GameObject* oGameObject, float fDeltaTime, GameManage
 		bIsAlreadyInCollision = true;
 	}
 	if (isCollide) {
+		
 		if (bIsAlreadyInCollision == false)
 		{
+			std::cout << cSide;
 			onCollisionEnter(cSide, oGame, oGameObject);
 		}
 		else {
@@ -50,7 +54,7 @@ void Ball::handleCollision(GameObject* oGameObject, float fDeltaTime, GameManage
 	}
 	else {
 		if (bIsAlreadyInCollision) {
-			onCollisionExit(cSide, oGameObject);
+			onCollisionExit( oGameObject);
 		}
 	}
 }
