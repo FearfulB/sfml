@@ -40,6 +40,7 @@ sf::Sprite* AssetManager::setTexture(sf::Texture* texture, int iSizeX, int iSize
 	(*sprite).setTexture(*texture);
 	(*sprite).setScale(sf::Vector2f(iSizeX, iSizeY));
 	(*sprite).setPosition(sf::Vector2f(iX, iY));
+	(*sprite).setOrigin(sf::Vector2f(10, 0));
 	return sprite;
 }
 

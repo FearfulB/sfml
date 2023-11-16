@@ -21,6 +21,8 @@ public:
 
 	int getWidth();
 	int getHeight();
-	void display();
+	void display(int iNumberBall);
 	void displayWin();
+	void displayLose();
+	void displayNumberBall(int iNumberBall);
 };

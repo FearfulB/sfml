@@ -18,9 +18,10 @@ public:
 	static void Init();
 	static GameManager* Get();
 	bool checkWin();
-
+	bool checkLose();
 	void mainLoop();
 	
+	int m_iNumberBall;
 	std::vector<int> m_viGrid;
 	std::vector<GameObject*> m_voRectCollide;
 	std::vector<Ball*> m_voCircleCollide;

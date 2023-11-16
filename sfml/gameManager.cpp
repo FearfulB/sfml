@@ -8,6 +8,7 @@ GameManager::GameManager()
 {
     AssetManager::Init();
     m_oWindow = new Window(640, 480, "Casse Brique F1");
+    m_iNumberBall = 4;
     std::string sFileName("grid.txt");
     std::ifstream fichier(sFileName);
 
@@ -65,6 +66,11 @@ void GameManager::Init()
          return true;
      }
  }
+ bool GameManager::checkLose() {
+     if (m_iNumberBall <= 0) {
+         return true;
+     }
+ }
 
  void GameManager::mainLoop() 
  {
@@ -93,6 +99,8 @@ void GameManager::Init()
                  {
                      m_oCannon->setDirection((localPosition.x - m_oCannon->getX()), (localPosition.y- m_oCannon->getY()));
                      Ball* m_oCircle = new Ball(m_oCannon->getX(), m_oCannon->getY() - 50, 5, m_oWindow, this, m_oCannon->getDirectionX(),m_oCannon->getDirectionY(),300.f);
+                     
+                     m_iNumberBall -= 1;
                      bCanShoot = false;
                  }
              }
@@ -105,10 +113,11 @@ void GameManager::Init()
                     m_voCircleCollide[0]->handleCollision(m_voRectCollide[i], fDeltaTime, this);
                 }
              }
-             if (m_voCircleCollide[0]->getY() > m_oWindow->getHeight()) {
+             if (m_voCircleCollide[0]->getY() > m_oWindow->getHeight() || m_voCircleCollide[0]->getX() > m_oWindow->getWidth() || m_voCircleCollide[0]->getX() < 0) {
                  for (int i = 0; i < m_oWindow->m_voGameWindowObjects.size(); i++) {
                      if (m_voCircleCollide[0] == m_oWindow->m_voGameWindowObjects[i]) {
                          m_oWindow->m_voGameWindowObjects.erase(m_oWindow->m_voGameWindowObjects.begin() + i);
+                         
                          bCanShoot = true;
                      }
                  }
@@ -120,12 +129,15 @@ void GameManager::Init()
 
          //DRAW
          m_oWindow->m_oWindow->clear();
-         m_oWindow->display();
+        
+         m_oWindow->display(m_iNumberBall);
+         
          fDeltaTime = oClock.restart().asSeconds();
-         if (checkWin())
+         if ((checkWin() == true) || (checkLose() == true && m_voCircleCollide.empty()))
          {
              m_oWindow->m_oWindow->clear();
-             m_oWindow->displayWin();
+             (checkWin())? m_oWindow->displayWin() : m_oWindow->displayLose();
+             
              while (m_oWindow->m_oWindow->isOpen()) {
                  while (m_oWindow->m_oWindow->pollEvent(oEvent))
                  {
