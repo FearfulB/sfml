@@ -107,7 +107,7 @@ bool GameObject::isColliding(GameObject* oGameObject) {
 		(math::isPointBetween(oGameObject->m_iX, m_iX, m_iX + m_iLength)
 			|| math::isPointBetween(oGameObject->m_iX + oGameObject->m_iLength, m_iX, m_iX + m_iLength)
 			|| math::isPointBetween(m_iX, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength)
-			||math::isPointBetween(m_iX + m_iLength, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength)) ? iCollidValue += 1 : false;
+			|| math::isPointBetween(m_iX + m_iLength, oGameObject->m_iX, oGameObject->m_iX + oGameObject->m_iLength)) ? iCollidValue += 1 : false;
 	}
 	if (iCollidValue == 2) {
 		iCollidValue = 0;
