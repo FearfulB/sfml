@@ -15,6 +15,8 @@ public:
 	Window(int iWitdh, int iHeight, std::string sTitle);
 	sf::RenderWindow* m_oWindow;
 	std::vector<GameObject*> m_voGameWindowObjects;
+	std::vector<sf::Sprite*> m_voSprite;
+	sf::Sprite* m_sprite;
 	/*dans le gameManager mettre le rectCollide et le circle*/
 
 	int getWidth();

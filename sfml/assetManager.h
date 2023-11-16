@@ -6,13 +6,19 @@ class AssetManager
 private:
 	AssetManager();
 	static AssetManager* pInstance;
-	std::map<std::string, sf::Texture*> m_mTextures;
+	
 
 
 public:
-
+	
 	static void Init();
 	static AssetManager* Get();
-	sf::Texture loadTexture(const char* cPath);
+	sf::Sprite* sprite(const char* cPath, int iSizeX, int iSizeY, int iX, int iY);
+	sf::Font* m_font = new sf::Font;
+
+	sf::Text* text(const char* cPath, const char* cMessage, int size, int iX, int iY);
+	std::map<std::string, sf::Sprite*> m_mSprite;
+	std::map<std::string, sf::Text*> m_mText;
+	
 };
 

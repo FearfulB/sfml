@@ -7,8 +7,9 @@
 GameManager::GameManager()
 {
 
-    
+    AssetManager::Init();
     m_oWindow = new Window(640, 480, "Casse Brique");
+    
     std::string sFileName("grid.txt");
     std::ifstream fichier(sFileName);
 
@@ -42,7 +43,7 @@ GameManager::GameManager()
     fichier.close();
     
 
-    m_oCannon = new Cannon(310, 410, 50, 20, NULL, NULL, m_oWindow, this);
+    m_oCannon = new Cannon(310, 410, 50, 20, NULL, NULL, m_oWindow, this, "canon.png");
     m_oWallLeft = new GameObject(-10, 0, 480, 10, m_oWindow, this);
     m_oWallRight = new GameObject(640, 0, 480, 10, m_oWindow, this);
     m_oWallTop = new GameObject(0, -10, 10, 630, m_oWindow, this);
@@ -66,6 +67,8 @@ void GameManager::Init()
      if (m_voBrickCollide.empty()) {
          return true;
      }
+     
+     
  }
 
  
@@ -96,7 +99,7 @@ void GameManager::Init()
                  if (oEvent.mouseButton.button == sf::Mouse::Left && bCanShoot)
                  {
                      m_oCannon->setDirection((localPosition.x - m_oCannon->getX()), (localPosition.y- m_oCannon->getY()));
-                     Ball* m_oCircle = new Ball(m_oCannon->getX(), m_oCannon->getY() - 50, 10, m_oWindow, this, m_oCannon->getDirectionX(),m_oCannon->getDirectionY(),10.f);
+                     Ball* m_oCircle = new Ball(m_oCannon->getX(), m_oCannon->getY() - 50, 10, m_oWindow, this, m_oCannon->getDirectionX(),m_oCannon->getDirectionY(),30.f);
                      bCanShoot = false;
                  }
              }
@@ -122,17 +125,25 @@ void GameManager::Init()
          }
          //DRAW
          m_oWindow->m_oWindow->clear();
-         if (checkWin())
-         {
-             m_oWindow->displayWin();
-             
-         }
+         
          m_oWindow->display();
          fDeltaTime = oClock.restart().asSeconds();
-         
-     }
-
-     
+         if (checkWin())
+         {
+             
+             m_oWindow->displayWin();
+             m_oWindow->display();
+             
+             while (m_oWindow->m_oWindow->isOpen()) {
+                 while (m_oWindow->m_oWindow->pollEvent(oEvent))
+                 {
+                     if (oEvent.type == sf::Event::Closed) {
+                         m_oWindow->m_oWindow->close();
+                     }
+                 }  
+             }
+         } 
+     }  
  }
  
 

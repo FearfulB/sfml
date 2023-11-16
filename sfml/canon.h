@@ -6,8 +6,10 @@ class Cannon: public GameObject
 public:
 	float m_fDirectionX;
 	float m_fDirectionY;
+	sf::Sprite* m_sprite = new sf::Sprite();
 
-	Cannon( float iX, float iY, int iWidth, int iLength, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame);
+	Cannon( float iX, float iY, int iWidth, int iLength, float fDirectionX, float fDirectionY, Window* oWindow, GameManager* oGame, const char* cPath);
+	~Cannon();
 
 	float getDirectionX();
 	float getDirectionY();

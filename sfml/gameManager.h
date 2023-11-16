@@ -4,6 +4,7 @@
 #include "canon.h"
 #include "ball.h"
 #include "brick.h"
+#include "assetManager.h"
 
 
 class GameManager
@@ -26,6 +27,8 @@ public:
 	std::vector<Ball*> m_voCircleCollide;
 	std::vector<Brick*> m_voBrickCollide;
 	Window* m_oWindow;
+
+	
 
 	Cannon* m_oCannon;
 	GameObject* m_oRect;
