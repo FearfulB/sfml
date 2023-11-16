@@ -14,4 +14,5 @@ public:
 	void bounce(char cSite);
 	void handleCollision(GameObject* oGameObject, float fDeltaTime, GameManager* oGame) override;
 	void onCollisionEnter(char cSide, GameManager* oGame, GameObject* oGameObject) override;
+	void onCollisionExit(GameObject* oGameObject) override;
 };

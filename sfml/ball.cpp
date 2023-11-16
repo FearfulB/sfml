@@ -36,31 +36,41 @@ void Ball::bounce(char cSite) {
 }
 void Ball::handleCollision(GameObject* oGameObject, float fDeltaTime, GameManager* oGame) {
 	bool isCollide = isColliding(oGameObject);
-	bool bIsAlreadyInCollision = false;
-	char cSide = getSide(oGameObject);
-	if (std::count(m_voObjectCollide.begin(), m_voObjectCollide.end(), oGameObject)) {
-		bIsAlreadyInCollision = true;
-	}
+
+	auto bIsAlreadyInCollision = std::find(m_voObjectCollide.begin(), m_voObjectCollide.end(), oGameObject);
+
+
+	//for (int i = 0; i < m_voObjectCollide.size(); i++) {
+	//	if (m_voObjectCollide[i] == oGameObject) {
+	//		bIsAlreadyInCollision = true;
+	//	}
+	//}
 	if (isCollide) {
-		
-		if (bIsAlreadyInCollision == false)
+
+		char cSide = getSide(oGameObject);
+		if (bIsAlreadyInCollision == m_voObjectCollide.end())
 		{
 			std::cout << cSide;
+			m_voObjectCollide.push_back(oGameObject);
 			onCollisionEnter(cSide, oGame, oGameObject);
+			oGameObject->onCollisionEnter(cSide, oGame, oGameObject);
 		}
 		else {
 			onCollisionStay(cSide, oGameObject);
 		}
 	}
 	else {
-		if (bIsAlreadyInCollision) {
+		if (bIsAlreadyInCollision != m_voObjectCollide.end()) {
 			onCollisionExit( oGameObject);
+			m_voObjectCollide.erase(bIsAlreadyInCollision);
 		}
 	}
 }
 
 void Ball::onCollisionEnter(char cSide, GameManager* oGame, GameObject* oGameObject) {
-	m_voObjectCollide.push_back(oGameObject);
-	oGameObject->onCollisionEnter(cSide, oGame,oGameObject);
 	bounce(cSide);
+}
+
+void Ball::onCollisionExit(GameObject* oGameObject) {
+
 }

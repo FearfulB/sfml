@@ -24,9 +24,6 @@
     <ClInclude Include="math.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="inputManager.h">
-      <Filter>Fichiers d%27en-tête</Filter>
-    </ClInclude>
     <ClInclude Include="gameManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
@@ -51,9 +48,6 @@
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="math.cpp">
-      <Filter>Fichiers sources</Filter>
-    </ClCompile>
-    <ClCompile Include="inputManager.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="gameManager.cpp">

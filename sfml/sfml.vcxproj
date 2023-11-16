@@ -138,7 +138,6 @@
     <ClInclude Include="canon.h" />
     <ClInclude Include="gameManager.h" />
     <ClInclude Include="gameObject.h" />
-    <ClInclude Include="inputManager.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="windowManager.h" />
@@ -149,7 +148,6 @@
     <ClCompile Include="canon.cpp" />
     <ClCompile Include="gameManager.cpp" />
     <ClCompile Include="gameObject.cpp" />
-    <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math.cpp" />
     <ClCompile Include="windowManager.cpp" />

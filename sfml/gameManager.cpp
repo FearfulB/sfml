@@ -86,19 +86,18 @@ void GameManager::Init()
                  if (oEvent.mouseButton.button == sf::Mouse::Left && bCanShoot)
                  {
                      m_oCannon->setDirection((localPosition.x - m_oCannon->getX()), (localPosition.y- m_oCannon->getY()));
-                     Ball* m_oCircle = new Ball(m_oCannon->getX(), m_oCannon->getY() - 50, 5, m_oWindow, this, m_oCannon->getDirectionX(),m_oCannon->getDirectionY(),10.f);
+                     Ball* m_oCircle = new Ball(m_oCannon->getX(), m_oCannon->getY() - 50, 5, m_oWindow, this, m_oCannon->getDirectionX(),m_oCannon->getDirectionY(),300.f);
                      bCanShoot = false;
                  }
              }
          }
+         
          if (!m_voCircleCollide.empty()) {
+             m_voCircleCollide[0]->move(fDeltaTime);
              for (int i = 0; i < m_voRectCollide.size(); i++) {
-                 for (int j = 0; j < m_voCircleCollide.size(); j++) {
-                     if (m_voRectCollide[i] != m_oCannon) {
-                         m_voCircleCollide[j]->handleCollision(m_voRectCollide[i], fDeltaTime, this);
-                         m_voCircleCollide[j]->move(fDeltaTime);
-                     }
-                 }
+                if (m_voRectCollide[i] != m_oCannon) {
+                    m_voCircleCollide[0]->handleCollision(m_voRectCollide[i], fDeltaTime, this);
+                }
              }
              if (m_voCircleCollide[0]->getY() > m_oWindow->getHeight()) {
                  for (int i = 0; i < m_oWindow->m_voGameWindowObjects.size(); i++) {

@@ -36,7 +36,6 @@ void Brick::takeDamage(GameManager* oGame,GameObject* oGameObject) {
 	}
 }
 void Brick::onCollisionEnter(char cSide, GameManager* oGame, GameObject* oGameObject) {
-	m_voObjectCollide.push_back(oGameObject);
 	takeDamage(oGame,oGameObject);
 }
 Brick::~Brick() {

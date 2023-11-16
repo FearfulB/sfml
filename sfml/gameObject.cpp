@@ -79,14 +79,7 @@ void GameObject::onCollisionStay(char cSide, GameObject* oGameObject) {
 
 }
 void GameObject::onCollisionExit(GameObject* oGameObject) {
-	int iObjectIndex = 0;
-	for (int i = 0; i < m_voObjectCollide.size(); i++) {
-		if (m_voObjectCollide[i] == oGameObject) {
-			iObjectIndex = i;
-			break;
-		}
-	}
-	m_voObjectCollide.erase(m_voObjectCollide.begin() + iObjectIndex);
+
 }
 
 bool GameObject::isColliding(GameObject* oGameObject) {
@@ -121,47 +114,19 @@ char GameObject::getSide(GameObject* oGameObject)
 	int iXmax = getX() + getLength();
 	int iYmin = getY();
 	int iYmax = getY() + getWidth();
-	int allrect = (iGo1Ymax - iGo1Ymin) - (iYmin - iGo1Ymin) - (iGo1Ymax - iYmax);
 
 	if ((iYmin - iGo1Ymin > iYmin - iGo1Ymax) && (iXmax - iGo1Xmin > iGo1Ymax - iYmin ) && (math::isPointBetween(iXmin,iGo1Xmin,iGo1Xmax))&& (math::isPointBetween(iYmin,iGo1Ymin,iGo1Ymax))) {
-		/*std::cout << "bas";*/
 		return 'd';
 	}
 	else if ((iYmax - iGo1Ymin > iYmax - iGo1Ymax) && (iGo1Xmax - iXmin > iGo1Ymax - iYmin ) &&  (math::isPointBetween(iXmax, iGo1Xmin, iGo1Xmax)) && (math::isPointBetween(iYmax, iGo1Ymin, iGo1Ymax))) {
-		/*std::cout << "haut";*/
 		return 'u';
 	}
-	else if ((iGo1Xmax - iXmin > iXmin - iGo1Xmin ) && (iGo1Ymax - iYmin > iGo1Xmax - iXmin) && (math::isPointBetween(iXmin, iGo1Xmin, iGo1Xmax)) && (math::isPointBetween(iYmax, iGo1Ymin, iGo1Ymax))) {
-		/*std::cout << "droite";*/
+	else if ((iGo1Xmax - iXmin > iXmin - iGo1Xmin ) && (iGo1Ymax - iYmin > iGo1Xmax - iXmin) && (math::isPointBetween(iXmin, iGo1Xmin, iGo1Xmax)) && (math::isPointBetween(iYmin, iGo1Ymin, iGo1Ymax))) {
 		return 'r';
 	}
 	else if ((iXmax - iGo1Xmin > iGo1Xmin - iXmin) && (iGo1Ymax - iYmax > iXmax - iGo1Xmin) && (math::isPointBetween(iXmax, iGo1Xmin, iGo1Xmax)) && (math::isPointBetween(iYmax, iGo1Ymin, iGo1Ymax))) {
-		/*std::cout << "gauche";*/
 		return 'l';
 	}
-	//if ( > ) {
-	//	if (m_iX + m_iLength >= oGameObject->m_iX and m_iX <= oGameObject->m_iX) {
-	//		std::cout << "A";
-	//		return 'l';
-	//	}
-	//	else {
-	//		std::cout << "B";
-	//		return 'r';
-	//	}
-	//}
-	//else if (overlapLR < overlapUD) {
-	//else if (overlapLR < overlapUD) {
-
-	//	if (m_iY + m_iWidth >= oGameObject->m_iY and m_iY <= oGameObject->m_iY) {
-	//		return 'u';
-	//	}
-	//	else {
-	//		return 'd';
-	//	}
-	//}
-	//else {
-	//	return 'p';
-	//}
 }
 
 GameObject::~GameObject()
