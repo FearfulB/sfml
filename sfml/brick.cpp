@@ -28,9 +28,9 @@ void Brick::takeDamage(GameManager* oGame,GameObject* oGameObject) {
 				oGame->m_voBrickCollide.erase(oGame->m_voBrickCollide.begin() + i);
 			}
 		}
-		for (int i = 0; i < oGame->m_oWindow->m_voGameWindowObjects.size(); i++) {
-			if (this == oGame->m_oWindow->m_voGameWindowObjects[i]) {
-				oGame->m_oWindow->m_voGameWindowObjects.erase(oGame->m_oWindow->m_voGameWindowObjects.begin() + i);
+		for (int i = 0; i < oGame->m_oWindowManager->m_voGameWindowObjects.size(); i++) {
+			if (this == oGame->m_oWindowManager->m_voGameWindowObjects[i]) {
+				oGame->m_oWindowManager->m_voGameWindowObjects.erase(oGame->m_oWindowManager->m_voGameWindowObjects.begin() + i);
 			}
 		}
 	}

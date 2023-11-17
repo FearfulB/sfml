@@ -13,7 +13,6 @@ Ball::Ball(float iX, float iY, int iRadius, Window* oWindow, GameManager* oGame,
 }
 
 void Ball::move(float fDeltaTime) {
-	/*std::cout << oGameObject->m_fDirectionX << std::endl;*/
 	m_iX += m_fDirection[0] * fDeltaTime * m_fSpeed;
 	m_iY += m_fDirection[1] * fDeltaTime * m_fSpeed;
 	setPosition(m_iX, m_iY);

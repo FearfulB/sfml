@@ -26,7 +26,7 @@ public:
 	std::vector<GameObject*> m_voRectCollide;
 	std::vector<Ball*> m_voCircleCollide;
 	std::vector<Brick*> m_voBrickCollide;
-	Window* m_oWindow;
+	Window* m_oWindowManager;
 
 	Cannon* m_oCannon;
 	
