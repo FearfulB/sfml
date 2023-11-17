@@ -31,7 +31,7 @@ void Window::display(int iNumberBall) {
 
 void Window::displayWin() {
 	m_oWindow->draw(*m_sprite);
-	sf::Text* text = AssetManager::Get()->text("starborn/Starborn.ttf", "You Win", 50, 250, 150);
+	sf::Text* text = AssetManager::Get()->text("starborn/Starborn.ttf", "You Win", 50, 150, 150);
 	m_oWindow->draw(*text);
 	m_oWindow->display();
 }
@@ -44,7 +44,7 @@ void Window::displayLose() {
 }
 void Window::displayNumberBall(int iNumberBall) {
 	m_oWindow->draw(*m_sprite);
-	sf::Text* text = AssetManager::Get()->text("starborn/Starborn.ttf",std::to_string(iNumberBall).c_str(), 30, 600, 10);
+	sf::Text* text = AssetManager::Get()->text("starborn/Starborn.ttf",std::to_string(iNumberBall).c_str(), 30, 590, 10);
 	m_oWindow->draw(*text);
 	/*m_oWindow->display();*/
 }

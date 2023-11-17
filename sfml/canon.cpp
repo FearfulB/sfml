@@ -21,7 +21,6 @@ float Cannon::getDirectionY() {
 void Cannon::setOrientation(float vMousePositionX, float vMousePositionY, float fRatioX, float fRatioY) {
 	m_Shape->setOrigin(fRatioX, fRatioY);
 	int mouseAngle = -atan2(vMousePositionX - m_iX, vMousePositionY - m_iY) * 180 / 3.1459;
-	std::cout << mouseAngle << std::endl;
 	m_Shape->setRotation(mouseAngle);
 	m_sprite->setRotation(mouseAngle);
 }

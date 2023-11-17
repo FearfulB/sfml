@@ -8,7 +8,7 @@ GameManager::GameManager()
 {
     AssetManager::Init();
     m_oWindow = new Window(640, 480, "Casse Brique F1");
-    m_iNumberBall = 4;
+    m_iNumberBall = 30;
     std::string sFileName("grid.txt");
     std::ifstream fichier(sFileName);
 
