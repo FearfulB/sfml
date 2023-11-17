@@ -98,7 +98,7 @@ void GameManager::Init()
                  if (oEvent.mouseButton.button == sf::Mouse::Left && bCanShoot)
                  {
                      m_oCannon->setDirection((localPosition.x - m_oCannon->getX()), (localPosition.y- m_oCannon->getY()));
-                     Ball* m_oCircle = new Ball(m_oCannon->getX(), m_oCannon->getY() - 50, 5, m_oWindow, this, m_oCannon->getDirectionX(),m_oCannon->getDirectionY(),300.f);
+                     Ball* m_oCircle = new Ball(m_oCannon->getX(), m_oCannon->getY(), 5, m_oWindow, this, m_oCannon->getDirectionX(),m_oCannon->getDirectionY(),300.f);
                      
                      m_iNumberBall -= 1;
                      bCanShoot = false;
@@ -117,7 +117,6 @@ void GameManager::Init()
                  for (int i = 0; i < m_oWindow->m_voGameWindowObjects.size(); i++) {
                      if (m_voCircleCollide[0] == m_oWindow->m_voGameWindowObjects[i]) {
                          m_oWindow->m_voGameWindowObjects.erase(m_oWindow->m_voGameWindowObjects.begin() + i);
-                         
                          bCanShoot = true;
                      }
                  }

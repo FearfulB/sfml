@@ -20,7 +20,10 @@ void Window::display(int iNumberBall) {
 	m_oWindow->draw(*m_sprite);
 	displayNumberBall(iNumberBall);
 	for (int i = 0; i < m_voGameWindowObjects.size(); i++) {
-		m_voGameWindowObjects[i]->draw(*this);
+		if (m_voGameWindowObjects[i]->m_iX != 310 && m_voGameWindowObjects[i]->m_iY != 410) {
+			m_voGameWindowObjects[i]->draw(*this);
+		}
+		
 	}
 	for (int i = 0; i < m_voSprite.size(); i++) {
 		m_oWindow->draw(*m_voSprite[i]);

@@ -8,6 +8,7 @@ Ball::Ball(float iX, float iY, int iRadius, Window* oWindow, GameManager* oGame,
 	m_fDirection.push_back(fDirectionY);
 	m_fSpeed = fSpeed;
 	(*oGame).m_voCircleCollide.push_back(this);
+	m_Shape->setOrigin(0.5f, 0.5f);
 
 }
 

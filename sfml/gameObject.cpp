@@ -153,8 +153,11 @@ char GameObject::getSide(GameObject* oGameObject)
 	else if ((iXmax - iGo1Xmin < iGo1Xmin - iXmin) && (iGo1Ymax - iYmax > iXmax - iGo1Xmin) && (math::isPointBetween(iXmax, iGo1Xmin, iGo1Xmax)) && (math::isPointBetween(iYmax, iGo1Ymin, iGo1Ymax))) {
 		return 'l';
 	}
-	else {
+	else if(iGo1Ymax - iYmin == iXmax - iXmin){
 		return 'p';
+	}
+	else {
+		return 'o';
 	}
 }
 
